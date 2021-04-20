@@ -1,0 +1,19 @@
+<html>
+<body>
+    inner page for iframe cross-origin comms
+    <input id="childInput" type="text" placeholder="write here to parent">
+    <span id="messageArea"></span>
+
+    <script>
+const log = function(msg) {
+    messageArea.innerHTML += `<br>${msg}`;
+};
+window.addEventListener('message', function (event) {
+    debugger;
+    //var parentURL = event.origin;
+    log (`from parent: ${event.data}`);
+    event.source.postmessage('ack', event.origin);
+}, false);
+    </script>
+</body>
+</html>
