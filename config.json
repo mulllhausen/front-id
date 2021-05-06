@@ -1,0 +1,10 @@
+{
+    "readme": "global config settings for the simple static site builder are all in this file",
+    "processFileTypes": [
+        "html",
+        "css",
+        "js"
+    ],
+    "domain": "frontid.null.place",
+    "productionDir": "production"
+}
