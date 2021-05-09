@@ -31,7 +31,7 @@ function ld_json($file, $name)
         "@type" => "WebSite",
         "datePublished" => date("Y-m-d"),
         "description" => site_description,
-        "image" => qs_link("/image/shattered-glass-matrix.png"),
+        //"image" => qs_link("/image/shattered-glass-matrix.png"),
         "inLanguage" => "English",
         "name" => $name,
         "url" => "https://".domain."/$file"

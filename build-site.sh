@@ -115,3 +115,16 @@ else
     rm "$tmp_err_log"
     exit 1
 fi
+
+# clean up the error log file if it exists ...
+if [[ -f "$tmp_err_log" ]]; then
+    echo -n "deleting the the temporary error log file ($tmp_err_log) ... "
+    rm "$tmp_err_log"
+    if [[ $? == 0 ]]; then
+        echo "done"
+    else
+        echo
+        echo "... fail"
+        exit 1
+    fi
+fi
