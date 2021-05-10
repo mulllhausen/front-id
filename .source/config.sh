@@ -3,7 +3,14 @@
 # global config file
 # used by the static site builder (build-site.sh) and by php
 
+# production
+schema="https://"
 domain="frontid.null.place"
+
+# dev (make all paths relative)
+#schema=""
+#domain=""
+
 author="mulllhausen"
 site_description="the frontend id system"
 source_dir="."
