@@ -15,6 +15,14 @@ die() {
     exit 1
 }
 
+explain_files="all" # init
+specific_files="*"
+if [[ "$1" != "" ]]; then
+    explain_files="$1"
+    specific_files="$1"
+    echo "processing only $specific_files file(s)"
+fi
+
 # check we have all the programs used in this script
 for program in "php" "readlink" "find" "dirname" "pwd" "grep" "cut" "rsync"; do
     x="$(which $program)"
@@ -80,9 +88,12 @@ fi
 # normalize the final path variable (purely for a pretty echo)
 processing_dir="$(unset CDPATH && cd "$processing_dir" && pwd)"
 
-echo -n "copying all files from the source dir ($source_dir/) to the" \
-"processing dir ($processing_dir/) ... "
-cp -r "$source_dir/"* "$processing_dir/"
+echo -n "copying $explain_files files from the source dir ($source_dir/) to" \
+"the processing dir ($processing_dir/) ... "
+
+rsync -a --prune-empty-dirs --include="*/" --include="$specific_files" \
+--exclude="*" "$source_dir/"* "$processing_dir/" 2>"$tmp_err_log"
+
 if [[ $? == 0 ]]; then
     echo "done"
 else
@@ -111,6 +122,12 @@ done
  
 # copy the specified files to production
 for extension in $site_file_extensions; do
+    files_with_extension="$(find "$processing_dir" -type f -name "*.$extension")"
+    if [[ "$files_with_extension" == "" ]]; then
+        echo "no $extension files for production"
+        continue
+    fi
+
     echo -n "copying $extension files from processing dir ($processing_dir/)" \
     "to production dir ($production_dir/) ... "
 
