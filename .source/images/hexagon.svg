@@ -1,0 +1,94 @@
+<?php
+define("processing_dir", $argv[1]);
+include(processing_dir."/css/globals.php");
+?>
+<? echo "<?"; ?>xml version="1.0" encoding="UTF-8"<? echo "?>"; ?> 
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Tiny//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd">
+
+<svg version="1.1" baseProfile="basic" xmlns="http://www.w3.org/2000/svg"
+xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300"
+class="global">
+<style type="text/css"><![CDATA[
+    .global {
+        fill: none;
+        cursor: default;
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none;   /* Chrome/Safari/Opera */
+        -khtml-user-select: none;    /* Konqueror */
+        -moz-user-select: none;      /* Firefox */
+        -ms-user-select: none;       /* IE/Edge */
+        user-select: none;
+        pointer-events: none;
+    }
+    .middle {
+        fill: white;
+    }
+    .inner {
+        fill: <? echo css_logo_grey; ?>;
+    }
+    .shine-lightgold {
+        stop-color: #fcbf22;
+    }
+    .shine-halfgold {
+        stop-color: #814700;
+    }
+    .shine-white {
+        stop-color: #faf0d9;
+    }
+    #dude {
+        fill: white;
+    }
+]]></style>
+<defs>
+    <!--rect x1="0" y1="0" width="260" height="300"/><circle cx="0" cy="0" r="150" /-->
+<?/*
+    drawing a hexagon in an svg - not so simple!
+
+    svg does not support polar coordinates, so we need to pick the hexagon side
+    length so that it has a width and height as close to an integer as possible.
+
+    a hexagon is made up of 6 equilateral trianges. the height of an equilateral
+    triangle = sqrt(3) * base / 2. choose base = 150 and height = 129.90... so
+    if we use 130 as the height then probably nobody will notice.
+
+    see here for more accurate approximations (which would be overkill):
+    math.stackexchange.com/a/3263295
+
+    we only need one size of hexagon. then we can use scaled versions of it.
+*/?>
+    <polygon id="hexagon" points="-130,-75 0,-150 130,-75 130,75 0,150 -130,75" />
+    <g id="dude">
+        <circle cx="0" cy="-300" r="90" />
+        <path d="M 0,0 L -130,-75 A 120,120 0 0,1 130,-75 z" />
+    </g>
+<?/* color-gradient - start top right, end bottom left */?>
+    <linearGradient id="goldGradient" x1="100%" y1="0%" x2="0%" y2="100%">
+        <animateTransform
+            attributeName="shimmer"
+            begin="0s"
+            type="rotate"
+            from="0 0 0"
+            to="360 0 0"
+            dur="10s"
+            repeatCount="indefinite"
+        />
+        <stop offset="10%" class="shine-halfgold" />
+        <stop offset="20%" class="shine-lightgold" />
+        <stop offset="40%" class="shine-lightgold" />
+        <stop offset="50%" class="shine-white" />
+        <stop offset="60%" class="shine-halfgold" />
+        <stop offset="80%" class="shine-lightgold" />
+        <stop offset="100%" class="shine-halfgold" />
+    </linearGradient>
+</defs>
+<?/* rect x="0" y="0" width="300" height="300" stroke="red" stroke-width="1"/ */?>
+<g transform="translate(150,150)">
+    <use href="#hexagon" class="outer" fill="url(#goldGradient)"></use>
+    <use href="#hexagon" transform="scale(0.95)" class="middle"></use>
+    <use href="#hexagon" transform="scale(0.90)" class="inner"></use>
+</g>
+<g transform="translate(150,286)">
+    <use href="#dude" transform="scale(0.55)"></use>
+</g>
+</svg>

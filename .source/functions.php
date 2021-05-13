@@ -37,7 +37,7 @@ function random_b64($length, $centered_text = null)
     $text = substr($text, 0, $length);
     if ($centered_text == null) return $text;
 
-    $add_text_len = strlen($centered_text);
+    $add_text_len = strlen(strip_tags($centered_text));
     $start_pos = ($length / 2) - ($add_text_len / 2);
     $text = substr_replace($text, $centered_text, $start_pos, $add_text_len);
     return $text;

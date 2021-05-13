@@ -68,11 +68,22 @@ var siteGlobals = {};
     .container has all the content in it. on pc it is a vertical strip down the
     middle. on phone and tablet it is the full page width.
 */?>
-        <div class="container">
+        <div class="page">
             <div class="header">
-                <span><? echo random_b64(1000); ?></span>
-                <span><? echo random_b64(1000, "frontID"); ?></span>
-                <span><? echo random_b64(1000); ?></span>
+<?
+$textlogo = '</span><span class="textlogo">frontID</span><span>';
+for($i = 0; $i < layout_header_num_lines; $i++)
+{
+?>
+                <div class="centertext">
+                    <span>
+<? echo random_b64(1000, ($i == 1) ? $textlogo : ""); ?>
+                    </span>
+                </div>
+<? } ?>
+            </div>
+            <div class="logo-container">
+                <img src="<? echo qs_link("/images/hexagon.svg"); ?>">
             </div>
         </div>
     </body>
