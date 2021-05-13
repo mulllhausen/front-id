@@ -3,7 +3,8 @@
 # a minimalistic php site builder.
 # 1) files are copied from the source dir to the specified processing dir
 # 2) files are processed and overwritten
-# 3) the processing dir is renamed to the production dir
+# 3) files are copied from the processing dir to the production dir
+# 4) the processing dir is deleted
 # this way production is only updated if everything is successful
 
 die() {
@@ -24,7 +25,7 @@ if [[ "$1" != "" ]]; then
 fi
 
 # check we have all the programs used in this script
-for program in "php" "readlink" "find" "dirname" "pwd" "grep" "cut" "rsync"; do
+for program in "php" "readlink" "find" "dirname" "pwd" "grep" "cut" "rsync" "sed"; do
     x="$(which $program)"
     if [[ $? != 0 ]]; then
         die "$program is not installed"
@@ -88,6 +89,31 @@ fi
 # normalize the final path variable (purely for a pretty echo)
 processing_dir="$(unset CDPATH && cd "$processing_dir" && pwd)"
 
+echo -n "copying config.sh from the source dir ($source_dir/) to the" \
+"processing dir ($processing_dir/) ... "
+cp "$source_dir/config.sh" "$processing_dir/config.sh"
+if [[ $? == 0 ]]; then
+    echo "done"
+else
+    die "fail"
+fi
+
+echo -n "substituting variables in $processing_dir/config.sh with their" \
+"values ... "
+sed "$processing_dir/config.sh" > "$processing_dir/config.sh.tmp" \
+2>"$tmp_err_log" \
+-e "s|\(source_dir=\"\).*\(\"$\)|\1$source_dir\2|" \
+-e "s|\(processing_dir=\"\).*\(\"$\)|\1$processing_dir\2|" \
+-e "s|\(production_dir=\"\).*\(\"$\)|\1$production_dir\2|" \
+-e "s|\$production_dir|$production_dir|"
+
+if [[ $? == 0 ]]; then
+    mv "$processing_dir/config.sh.tmp" "$processing_dir/config.sh"
+    echo "done"
+else
+    die "fail"
+fi
+
 echo -n "copying $explain_files files from the source dir ($source_dir/) to" \
 "the processing dir ($processing_dir/) ... "
 
@@ -111,7 +137,7 @@ done
 # process the specified files using php
 for f in $process_files; do
     echo -n "processing file $f ... "
-    php "$f" > "$f.tmp" 2>"$tmp_err_log"
+    php "$f" "$source_dir" "$processing_dir" > "$f.tmp" 2>"$tmp_err_log"
     if [[ $? == 0 ]]; then
         mv "$f.tmp" "$f"
         echo "done"

@@ -1,5 +1,6 @@
 <?php
-include("php/css-theme.php");
+define("source_dir", $argv[1]);
+include(source_dir."/css/globals.php");
 ?>
 <?/* begin raw element styles */?>
 html, body {
@@ -27,6 +28,9 @@ html, body {
 .container {
     width: 80%;
     margin: auto;
+}
+.header {
+    background-color: red;
 }
 .popup-fullpage {
 }

@@ -1,6 +1,8 @@
 <?php
-include(__DIR__."/functions.php");
-include(__DIR__."/css/globals.php");
+define("source_dir", $argv[1]);
+define("processing_dir", $argv[2]);
+include(source_dir."/functions.php");
+include(source_dir."/css/globals.php");
 
 // todo:
 // - page layout
@@ -68,6 +70,11 @@ var siteGlobals = {};
     middle. on phone and tablet it is the full page width.
 */?>
         <div class="container">
+            <div class="header">
+                <span><? echo random_b64(1000); ?></span>
+                <span><? echo random_b64(1000, "frontID"); ?></span>
+                <span><? echo random_b64(1000); ?></span>
+            </div>
         </div>
     </body>
 </html>
