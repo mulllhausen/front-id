@@ -18,8 +18,15 @@ tmp_err_log="build-site-err.txt"
 schema="file://"
 domain="$production_dir"
 
-# left first, right last
+# the files that will be copied from source to processing - all files, by default
+explain_files_for_processing="all"
+files_for_processing="*"
+explain_mandatory_files_for_processing="php files and config.sh"
+mandatory_files_for_processing="*php config.sh"
+
+# files to proces with php. left first, right last (must be a subset of
+# site_file_extensions)
 process_file_extensions="svg css html"
 
-# no special order
-site_file_extensions="html css js svg ico png"
+# the files that will be copied from processing to production - no special order
+production_file_extensions="html css js svg ico png"

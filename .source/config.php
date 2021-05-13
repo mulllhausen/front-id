@@ -2,7 +2,7 @@
 
 // get all the variables out of config.sh and define() them in php
 
-$f = fopen(__DIR__."/config.sh", "r");
+$f = fopen(processing_dir."/config.sh", "r");
 if (!$f) throw new Exception("unable to open config file");
 
 while (($line = fgets($f)) !== false)

@@ -1,7 +1,6 @@
 <?php
 
-define("source_dir", $argv[1]);
-define("processing_dir", $argv[2]);
+define("processing_dir", $argv[1]);
 include(processing_dir."/config.php");
 
 // querystring link - return the url of the file with a hash in the querystring

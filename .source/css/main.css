@@ -1,6 +1,8 @@
 <?php
-define("source_dir", $argv[1]);
-include(source_dir."/css/globals.php");
+
+define("processing_dir", $argv[1]);
+include(processing_dir."/css/globals.php");
+
 ?>
 <?/* begin raw element styles */?>
 html, body {

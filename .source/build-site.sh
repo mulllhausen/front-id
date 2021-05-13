@@ -16,14 +16,6 @@ die() {
     exit 1
 }
 
-explain_files="all" # init
-specific_files="*"
-if [[ "$1" != "" ]]; then
-    explain_files="$1"
-    specific_files="$1"
-    echo "processing only $specific_files file(s)"
-fi
-
 # check we have all the programs used in this script
 for program in "php" "readlink" "find" "dirname" "pwd" "grep" "cut" "rsync" "sed"; do
     x="$(which $program)"
@@ -39,6 +31,13 @@ abs_path="$(dirname $(readlink -f $0))"
 
 # import shared variables
 source "$abs_path/config.sh"
+
+if [[ "$1" != "" ]]; then
+    # overwrite these config variables
+    explain_files_for_processing="$1"
+    files_for_processing="$1"
+    echo "processing only $files_for_processing file(s)"
+fi
 
 # make all path variables absolute
 tmp_err_log="$abs_path/$tmp_err_log"
@@ -89,13 +88,41 @@ fi
 # normalize the final path variable (purely for a pretty echo)
 processing_dir="$(unset CDPATH && cd "$processing_dir" && pwd)"
 
-echo -n "copying config.sh from the source dir ($source_dir/) to the" \
-"processing dir ($processing_dir/) ... "
-cp "$source_dir/config.sh" "$processing_dir/config.sh"
+echo -n "copying $explain_files_for_processing file(s) from the source dir" \
+"($source_dir/) to the processing dir ($processing_dir/) ... "
+
+rsync -a --prune-empty-dirs --include="*/" --include="$files_for_processing" \
+--exclude="*" "$source_dir/"* "$processing_dir/" 2>"$tmp_err_log"
+
 if [[ $? == 0 ]]; then
     echo "done"
 else
     die "fail"
+fi
+
+# if we are processing all files then the mandatory files will already have been
+# copied from source to processing. however if we are not processing all files
+# then we need to copy the mandatory files over
+if [[ "$explain_files_for_processing" != "all" ]]; then
+    # $mandatory_files_for_processing may contain *
+    # since we cannot quote it, we must disable globing then re-enable it later
+    set -f # disable globbing
+    for f in $mandatory_files_for_processing; do
+        echo -n "copying $f file(s) from the source dir ($source_dir/) to the" \
+        "processing dir ($processing_dir/) ... "
+
+        set +f # enable globbing
+        rsync -a --prune-empty-dirs --include="*/" --include="$f" \
+        --exclude="*" "$source_dir/"* "$processing_dir/" 2>"$tmp_err_log"
+
+        if [[ $? == 0 ]]; then
+            echo "done"
+        else
+            die "fail"
+        fi
+        set -f # disable globbing
+    done
+    set +f # enable globbing
 fi
 
 echo -n "substituting variables in $processing_dir/config.sh with their" \
@@ -114,18 +141,6 @@ else
     die "fail"
 fi
 
-echo -n "copying $explain_files files from the source dir ($source_dir/) to" \
-"the processing dir ($processing_dir/) ... "
-
-rsync -a --prune-empty-dirs --include="*/" --include="$specific_files" \
---exclude="*" "$source_dir/"* "$processing_dir/" 2>"$tmp_err_log"
-
-if [[ $? == 0 ]]; then
-    echo "done"
-else
-    die "fail"
-fi
-
 # list and sort files using $process_file_extensions
 for extension in $process_file_extensions; do
     files_with_extension="$(find "$processing_dir" -type f -name "*.$extension")"
@@ -137,7 +152,7 @@ done
 # process the specified files using php
 for f in $process_files; do
     echo -n "processing file $f ... "
-    php "$f" "$source_dir" "$processing_dir" > "$f.tmp" 2>"$tmp_err_log"
+    php "$f" "$processing_dir" > "$f.tmp" 2>"$tmp_err_log"
     if [[ $? == 0 ]]; then
         mv "$f.tmp" "$f"
         echo "done"
@@ -147,7 +162,7 @@ for f in $process_files; do
 done
  
 # copy the specified files to production
-for extension in $site_file_extensions; do
+for extension in $production_file_extensions; do
     files_with_extension="$(find "$processing_dir" -type f -name "*.$extension")"
     if [[ "$files_with_extension" == "" ]]; then
         echo "no $extension files for production"
