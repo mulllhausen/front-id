@@ -21,6 +21,9 @@ class="global">
         user-select: none;
         pointer-events: none;
     }
+    .outer {
+        fill: url(#goldGradient);
+    }
     .middle {
         fill: white;
     }
@@ -38,6 +41,9 @@ class="global">
     }
     #dude {
         fill: white;
+    }
+    #goldGradient {
+        gradientUnits: objectBoundingBox;
     }
 ]]></style>
 <defs>
@@ -63,15 +69,26 @@ class="global">
         <path d="M 0,0 L -130,-75 A 120,120 0 0,1 130,-75 z" />
     </g>
 <?/* color-gradient - start top right, end bottom left */?>
-    <linearGradient id="goldGradient" x1="100%" y1="0%" x2="0%" y2="100%">
+    <linearGradient id="goldGradient" x1="1" y1="0" x2="0" y2="1">
         <animateTransform
-            attributeName="shimmer"
+            attributeName="gradientTransform"
             begin="0s"
             type="rotate"
-            from="0 0 0"
-            to="360 0 0"
-            dur="10s"
-            repeatCount="indefinite"
+<?/*
+note: when values is specified, from and to are ignored
+            from="0 0.5 0.5"
+            to="360 0.5 0.5"
+*/?>
+            values="0 0.5 0.5;
+                   45 0.5 0.5;
+                   90 0.5 0.5;
+                  180 0.5 0.5;
+                  270 0.5 0.5;
+                  315 0.5 0.5;
+                  360 0.5 0.5"
+            keyTimes="0; 0.2; 0.3; 0.5; 0.7; 0.8; 1"
+            dur="2s"
+            repeatCount="1"
         />
         <stop offset="10%" class="shine-halfgold" />
         <stop offset="20%" class="shine-lightgold" />
@@ -84,11 +101,11 @@ class="global">
 </defs>
 <?/* rect x="0" y="0" width="300" height="300" stroke="red" stroke-width="1"/ */?>
 <g transform="translate(150,150)">
-    <use href="#hexagon" class="outer" fill="url(#goldGradient)"></use>
-    <use href="#hexagon" transform="scale(0.95)" class="middle"></use>
-    <use href="#hexagon" transform="scale(0.90)" class="inner"></use>
+    <use href="#hexagon" class="outer" />
+    <use href="#hexagon" transform="scale(0.95)" class="middle" />
+    <use href="#hexagon" transform="scale(0.90)" class="inner" />
 </g>
 <g transform="translate(150,286)">
-    <use href="#dude" transform="scale(0.55)"></use>
+    <use href="#dude" transform="scale(0.55)" />
 </g>
 </svg>
