@@ -1,2 +1,24 @@
+<?php
+
+if (!defined("processing_dir")) define("processing_dir", $argv[1]);
+include_once(processing_dir."/functions.php");
+file_not_in_production(__FILE__);
+
+?>
+.popup-profile-pic-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;<?/* within the .page width */?>
+    height: 100%;
+    z-index: 1;
+    margin: auto;<?/* center */?>
+    overflow: hidden;<?/* no scroll since this messes with the % width centering */?>
+}
 .popup-profile-pic {
+    border: 1px solid black;
+    background-color: #fefefe;
+    margin: 100px auto;<?/* 100px from the top and centered */?>
+    width: <? echo css_page_width_percent; ?>%;
+    height: 100px;
 }

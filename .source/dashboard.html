@@ -5,9 +5,6 @@ include_once(processing_dir."/functions.php");
 include_once(processing_dir."/css/globals.php");
 
 // todo:
-// - page layout
-// - logo
-// - load profile picture (top left)
 // - login (by loading encrypted private key and entering password)
 // - login (by generating new encrypted private key and password)
 // - logout
@@ -41,7 +38,8 @@ include_once(processing_dir."/css/globals.php");
         <link rel="apple-touch-icon" href="<? echo qs_link("/images/apple-touch-icon.png"); ?>" />
         <link rel="apple-touch-icon" sizes="72x72" href="<? echo qs_link("/images/apple-touch-icon-72x72.png"); ?>" />
         <link rel="apple-touch-icon" sizes="114x114" href="<? echo qs_link("/images/apple-touch-icon-114x114.png"); ?>" />
-
+        <!--[if IE]><script>isIE9OrLess = true;</script><![endif]-->
+        <script src="<? echo qs_link("/js/main.js"); ?>"></script>
         <script type="application/ld+json"><? echo ld_json(__FILE__, "dashboard"); ?></script>
 
         <script>
@@ -87,7 +85,8 @@ for($i = 0; $i < layout_header_num_lines; $i++)
 <? } ?>
             </div>
             <div class="logo-container">
-                <img src="<? echo qs_link("/images/hexagon.svg"); ?>">
+                <img id="hexagonLogo" src="<? echo qs_link("/images/hexagon.svg"); ?>">
+                <div id="logoClicker" class="logo-clicker"></div>
             </div>
         </div>
     </body>

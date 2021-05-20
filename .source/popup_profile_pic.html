@@ -1,10 +1,13 @@
 <?php
 
+// html for the edit-profile-pic popup
+
 if (!defined("processing_dir")) define("processing_dir", $argv[1]);
 include_once(processing_dir."/functions.php");
 file_not_in_production(__FILE__);
 
 ?>
-<div id="popupProfilePic" class="popup-profile-pic" style="display:none;">
-
+<div id="popupProfilePic" class="popup-profile-pic-background" style="display:none;">
+    <div class="popup-profile-pic">
+    </div>
 </div>

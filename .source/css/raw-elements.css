@@ -1,0 +1,26 @@
+<?php
+
+if (!defined("processing_dir")) define("processing_dir", $argv[1]);
+include_once(processing_dir."/functions.php");
+file_not_in_production(__FILE__);
+
+?>
+html, body {
+    margin: 0;
+    padding: 0;
+
+    min-width: 100%;
+    width: 100%;
+    max-width: 100%;
+
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    color: <? echo css_font_color0_hex; ?>;
+    text-decoration: none;
+    text-shadow: none;
+    background-color: <? echo css_background_color0_hex; ?>;
+<?/* overflow: auto; do not show a scrollbar */?>
+}

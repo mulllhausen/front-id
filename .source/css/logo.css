@@ -1,0 +1,27 @@
+<?php
+
+if (!defined("processing_dir")) define("processing_dir", $argv[1]);
+include_once(processing_dir."/functions.php");
+file_not_in_production(__FILE__);
+
+?>
+.logo-container {
+    position: static;
+    width: 100%;
+    text-align: center;
+}
+.logo-container img {
+    width: <? echo css_logo_height; ?>px;
+    position: absolute;
+    top: <? echo ((css_header_line_height * layout_header_num_lines) - (css_logo_height / 2)); ?>px;
+    margin-left: -<? echo (css_logo_height / 2); ?>px;
+}
+.logo-clicker {
+    cursor: pointer;
+    position: absolute;
+    display: inline-block;
+    width: <? echo (css_logo_click_width); ?>px;
+    height: <? echo (css_logo_click_width); ?>px;
+    top: <? echo ((css_header_line_height * layout_header_num_lines) - (css_logo_click_width / 2)); ?>px;
+    margin-left: -<? echo (css_logo_click_width / 2); ?>px;
+}
