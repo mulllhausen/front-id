@@ -51,9 +51,22 @@ processing_dir="$abs_path/$processing_dir"
 "not exist and i'm not going to create it for you"
 
 # check php is properly configured
+php_err="" # init
+php_err_count=0
+it_them="it"
 if [[ "$(php -i | grep short_open_tag | grep On)" == "" ]]; then
+    php_err=", short_open_tag"
+    php_err_count=$((php_err_count+1))
+fi
+if [[ "$(php -i | grep register_argc_argv | grep On)" == "" ]]; then
+    php_err="$php_err, register_argc_argv"
+    php_err_count=$((php_err_count+1))
+fi
+if [[ $php_err != "" ]]; then
     ini_file="$(php --ini | grep "Loaded Configuration File" | cut -d' ' -f12)"
-    die "php does not have the short_open_tag option\nturn it on in $ini_file"
+    php_err="${php_err:1}" # chop off first character
+    if [[ $php_err_count > 1 ]]; then it_them="them"; fi
+    die "php is missing the following tags:$php_err\nturn $it_them on in $ini_file"
 fi
 
 # normalize some path variables (purely for pretty echos)
@@ -191,6 +204,19 @@ else
     die "fail"
 fi
 
+# delete suicidal files from production
+src_base=$(basename $source_dir)
+delete_files=$(grep --exclude-dir="$src_base" -rl "HARI KARI" "$production_dir")
+for delete_file in $delete_files; do
+    echo -n "deleting file $delete_file from production as requested ... "
+    rm -f "$delete_file" 2>"$tmp_err_log"
+    if [[ $? == 0 && ! -f "$delete_file" ]]; then
+        echo "done"
+    else
+        die "fail"
+    fi
+done
+
 # clean up the error log file if it exists ...
 if [[ -f "$tmp_err_log" ]]; then
     echo -n "deleting the the temporary error log file ($tmp_err_log) ... "
@@ -201,3 +227,5 @@ if [[ -f "$tmp_err_log" ]]; then
         die "\n... fail"
     fi
 fi
+
+echo "SUCCESS"

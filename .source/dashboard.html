@@ -1,7 +1,8 @@
 <?php
-define("processing_dir", $argv[1]);
-include(processing_dir."/functions.php");
-include(processing_dir."/css/globals.php");
+
+if (!defined("processing_dir")) define("processing_dir", $argv[1]);
+include_once(processing_dir."/functions.php");
+include_once(processing_dir."/css/globals.php");
 
 // todo:
 // - page layout
@@ -24,7 +25,7 @@ include(processing_dir."/css/globals.php");
         <link rel="stylesheet" href="<? echo qs_link("/css/main.css"); ?>"/>
 
 <?/* link rel="preload" as="image" href="<? echo qs_link("/images/icons.svg"); ?>" */?>
-        <link rel="preload" as="script" href="<? echo qs_link("/js/base.js"); ?>"/>
+        <link rel="preload" as="script" href="<? echo qs_link("/js/main.js"); ?>"/>
 
         <meta name="viewport" content="width=device-width, height=device-height initial-scale=1.0, user-scalable=no"/>
         <meta name="description" content="<? echo site_description; ?>"/>
@@ -68,6 +69,9 @@ var siteGlobals = {};
     .container has all the content in it. on pc it is a vertical strip down the
     middle. on phone and tablet it is the full page width.
 */?>
+        <div class="popup-store">
+<? include_once(processing_dir."/popup_profile_pic.html"); ?>
+        </div>
         <div class="page">
             <div class="header">
 <?

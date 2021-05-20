@@ -1,7 +1,7 @@
 <?php
 
-define("processing_dir", $argv[1]);
-include(processing_dir."/css/globals.php");
+if (!defined("processing_dir")) define("processing_dir", $argv[1]);
+include_once(processing_dir."/css/globals.php");
 
 ?>
 <?/* begin raw element styles */?>
@@ -71,8 +71,6 @@ html, body {
     top: <? echo ((css_header_line_height * layout_header_num_lines) - (css_logo_height / 2)); ?>px;
     margin-left: -<? echo (css_logo_height / 2); ?>px;
 }
-.popup-fullpage {
-}
-.popup-centerer {
-}
 <?/* end page-layout styles */?>
+
+<? include_once(processing_dir."/css/popup_profile_pic.css"); ?>

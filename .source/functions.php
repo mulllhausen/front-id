@@ -1,7 +1,7 @@
 <?php
 
-define("processing_dir", $argv[1]);
-include(processing_dir."/config.php");
+if (!defined("processing_dir")) define("processing_dir", $argv[1]);
+include_once(processing_dir."/config.php");
 
 // querystring link - return the url of the file with a hash in the querystring
 function qs_link($file_with_path)
@@ -57,6 +57,23 @@ function ld_json($file, $name)
         "url" => schema.domain."/$file"
     );
     return json_encode($ld_json);
+}
+
+// this function is called when a file does not want to appear in production
+// directly. note that this will not prevent it from appearing in production
+// when included or concatenated into another file
+function file_not_in_production($file)
+{
+    global $argv;
+
+    // exit the function here if file is allowed in production
+    if (basename($argv[0]) != basename($file)) return;
+
+    // prevents grep finding the functions.php file
+    $hari = "HARI";
+    $kari = "KARI";
+    $info = "this file should not exist in production";
+    die("$hari $kari ($info)");
 }
 
 ?>

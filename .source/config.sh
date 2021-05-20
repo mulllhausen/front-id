@@ -14,7 +14,7 @@ tmp_err_log="build-site-err.txt"
 #schema="https://"
 #domain="frontid.null.place"
 
-#build_for="dev"
+build_for="dev"
 schema="file://"
 domain="$production_dir"
 
@@ -26,7 +26,7 @@ mandatory_files_for_processing="*php config.sh"
 
 # files to proces with php. left first, right last (must be a subset of
 # site_file_extensions)
-process_file_extensions="svg css html"
+process_file_extensions="svg css js html"
 
 # the files that will be copied from processing to production - no special order
 production_file_extensions="html css js svg ico png"
