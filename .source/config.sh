@@ -4,6 +4,7 @@
 # used by the static site builder (build-site.sh) and by php
 
 author="mulllhausen"
+sitename="frontID"
 site_description="the frontend id system"
 source_dir="."
 processing_dir="../processing"

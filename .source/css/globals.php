@@ -9,11 +9,14 @@ define("css_font_color0_hex", "#000000"); // main font color (black)
 
 define("css_page_width_percent", 80);
 
-// logo
-define("css_logo_grey", "#d1d5da");
-define("css_logo_height", "150"); // px (the logo img is square)
-define("css_logo_click_width", "120"); // px (the logo img is square)
+// hexagon profile pic
+define("css_hexagon_profile_pic_grey", "#d1d5da");
+define("css_hexagon_profile_pic_height", "150"); // px (the logo img is square)
+
+// px (as per the hexagon formula in images/hexagon.svg)
+define("css_hexagon_profile_pic_click_width", "130");
+
+// header
 define("css_header_line_height", "18"); // px
-define("layout_header_num_lines", "7");
 
 ?>

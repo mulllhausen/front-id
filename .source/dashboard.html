@@ -49,12 +49,7 @@ var siteGlobals = {};
         <link rel="manifest" href="<? echo qs_link("/js/manifest.json"); ?>" />
     </head>
     <body>
-        <div id="fullpagePopupNotification" class="popup-fullpage" style="display:none;">
-            <span class="popup-centerer">
-                <h1><span id="fullpagePopupHeading"></span></h1><br>
-                <span id="fullpagePopupDetail"></span>
-            </span>
-        </div>
+<? include(processing_dir."/html/components/popup_modal.html"); ?>
         <script>
             if (window.hasOwnProperty == null) {
                 document.getElementById('fullpagePopupHeading').innerHTML = 'your browser is too old';
@@ -64,30 +59,12 @@ var siteGlobals = {};
             }
         </script>
 <?/*
-    .container has all the content in it. on pc it is a vertical strip down the
+    .page has all the content in it. on pc it is a vertical strip down the
     middle. on phone and tablet it is the full page width.
 */?>
-        <div class="popup-store">
-<? include_once(processing_dir."/popup_profile_pic.html"); ?>
-        </div>
         <div class="page">
-            <div class="header">
-<?
-$textlogo = '</span><span class="textlogo">frontID</span><span>';
-for($i = 0; $i < layout_header_num_lines; $i++)
-{
-?>
-                <div class="centertext">
-                    <span>
-<? echo random_b64(1000, ($i == 1) ? $textlogo : ""); ?>
-                    </span>
-                </div>
-<? } ?>
-            </div>
-            <div class="logo-container">
-                <img id="hexagonLogo" src="<? echo qs_link("/images/hexagon.svg"); ?>">
-                <div id="logoClicker" class="logo-clicker"></div>
-            </div>
+<? include(processing_dir."/html/components/header.html"); ?>
+<? include(processing_dir."/html/components/hexagon_profile_pic.html"); ?>
         </div>
     </body>
 </html>

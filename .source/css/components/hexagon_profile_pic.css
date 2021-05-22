@@ -1,0 +1,41 @@
+<?php
+
+if (!defined("processing_dir")) define("processing_dir", $argv[1]);
+include_once(processing_dir."/css/globals.php");
+include_once(processing_dir."/html/globals.php");
+
+?>
+.hexagon-container {
+    position: static;
+    width: 100%;
+    text-align: center;
+}
+.hexagon-profile-pic {
+    width: <? echo css_hexagon_profile_pic_height; ?>px;
+    position: absolute;
+    top: <? echo (
+
+        (css_header_line_height * layout_header_num_lines) -
+
+        (css_hexagon_profile_pic_height / 2)
+
+    ); ?>px;
+    margin-left: -<? echo (css_hexagon_profile_pic_height / 2); ?>px;
+}
+<?/*.profile-pic-clicker {
+    cursor: pointer;
+    position: absolute;
+    display: inline-block;
+    width: <? echo (css_hexagon_profile_pic_click_width); ?>px;
+    height: <? echo (css_hexagon_profile_pic_click_width); ?>px;
+    top: <? echo (
+
+    (css_header_line_height * layout_header_num_lines) -
+
+    (css_hexagon_profile_pic_click_width / 2)
+
+    ); ?>px;
+    margin-left: -<? echo (css_hexagon_profile_pic_click_width / 2); ?>px;
+<? // make the clicker into a circle so that roughly the hexagon can be clicked ?>
+    border-radius: <? echo (css_hexagon_profile_pic_click_width / 2); ?>px;
+}*/?>

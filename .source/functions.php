@@ -59,21 +59,4 @@ function ld_json($file, $name)
     return json_encode($ld_json);
 }
 
-// this function is called when a file does not want to appear in production
-// directly. note that this will not prevent it from appearing in production
-// when included or concatenated into another file
-function file_not_in_production($file)
-{
-    global $argv;
-
-    // exit the function here if file is allowed in production
-    if (basename($argv[0]) != basename($file)) return;
-
-    // prevents grep finding the functions.php file
-    $hari = "HARI";
-    $kari = "KARI";
-    $info = "this file should not exist in production";
-    die("$hari $kari ($info)");
-}
-
 ?>

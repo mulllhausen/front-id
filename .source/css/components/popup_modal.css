@@ -1,11 +1,10 @@
 <?php
 
 if (!defined("processing_dir")) define("processing_dir", $argv[1]);
-include_once(processing_dir."/functions.php");
-file_not_in_production(__FILE__);
+include_once(processing_dir."/css/globals.php");
 
 ?>
-.popup-profile-pic-background {
+.popup-modal-background {
     position: fixed;
     top: 0;
     left: 0;
@@ -15,7 +14,7 @@ file_not_in_production(__FILE__);
     margin: auto;<?/* center */?>
     overflow: hidden;<?/* no scroll since this messes with the % width centering */?>
 }
-.popup-profile-pic {
+.popup-modal {
     border: 1px solid black;
     background-color: #fefefe;
     margin: 100px auto;<?/* 100px from the top and centered */?>

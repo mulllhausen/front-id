@@ -3,9 +3,10 @@
 if (!defined("processing_dir")) define("processing_dir", $argv[1]);
 include_once(processing_dir."/css/globals.php");
 
+include_once(processing_dir."/css/components/raw_elements.css");
+include_once(processing_dir."/css/components/popup_modal.css");
+include_once(processing_dir."/css/components/layout.css");
+include_once(processing_dir."/css/components/header.css");
+include_once(processing_dir."/css/components/hexagon_profile_pic.css");
+
 ?>
-<? include_once(processing_dir."/css/raw-elements.css"); ?>
-<? include_once(processing_dir."/css/layout.css"); ?>
-<? include_once(processing_dir."/css/header.css"); ?>
-<? include_once(processing_dir."/css/logo.css"); ?>
-<? include_once(processing_dir."/css/popup_profile_pic.css"); ?>
