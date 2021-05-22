@@ -11,13 +11,13 @@ processing_dir="../processing"
 production_dir="../"
 tmp_err_log="build-site-err.txt"
 
-#build_for="production"
-#schema="https://"
-#domain="frontid.null.place"
+build_for="production"
+schema="https://"
+domain="frontid.null.place"
 
-build_for="dev"
-schema="file://"
-domain="$production_dir"
+#build_for="dev"
+#schema="file://"
+#domain="$production_dir"
 
 # the files that will be copied from source to processing - all files, by default
 explain_files_for_processing="all"

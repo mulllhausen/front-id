@@ -62,18 +62,9 @@ html, body {
     width: 100%;
     text-align: center;
 }
-.hexagon-container img {
+.hexagon-profile-pic {
     width: 150px;
     position: absolute;
     top: 51px;
     margin-left: -75px;
-}
-.profile-pic-clicker {
-    cursor: pointer;
-    position: absolute;
-    display: inline-block;
-    width: 126px;
-    height: 126px;
-    top: 63px;
-    margin-left: -63px;
 }
