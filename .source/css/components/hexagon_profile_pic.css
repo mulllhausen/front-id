@@ -1,6 +1,7 @@
 <?php
 
 if (!defined("processing_dir")) define("processing_dir", $argv[1]);
+include_once(processing_dir."/config.php");
 include_once(processing_dir."/css/globals.php");
 include_once(processing_dir."/html/globals.php");
 
@@ -22,12 +23,19 @@ include_once(processing_dir."/html/globals.php");
     ); ?>px;
     margin-left: -<? echo (css_hexagon_profile_pic_height / 2); ?>px;
 }
-<?/*.profile-pic-clicker {
+<?
+// running dev without a server means the svg has no document and hence cannot
+// accept click events. this hack enables clicking on the image by putting a
+// circle in front of the image.
+
+if (build_for == "dev") {
+?>
+.profile-pic-clicker {
     cursor: pointer;
     position: absolute;
     display: inline-block;
-    width: <? echo (css_hexagon_profile_pic_click_width); ?>px;
-    height: <? echo (css_hexagon_profile_pic_click_width); ?>px;
+    width: <? echo css_hexagon_profile_pic_click_width; ?>px;
+    height: <? echo css_hexagon_profile_pic_click_width; ?>px;
     top: <? echo (
 
     (css_header_line_height * layout_header_num_lines) -
@@ -36,6 +44,10 @@ include_once(processing_dir."/html/globals.php");
 
     ); ?>px;
     margin-left: -<? echo (css_hexagon_profile_pic_click_width / 2); ?>px;
-<? // make the clicker into a circle so that roughly the hexagon can be clicked ?>
+
+<?
+// make the clicker into a circle so that roughly the hexagon can be clicked
+?>
     border-radius: <? echo (css_hexagon_profile_pic_click_width / 2); ?>px;
-}*/?>
+}
+<? } ?>

@@ -1,9 +1,3 @@
-<?php
-
-if (!defined("processing_dir")) define("processing_dir", $argv[1]);
-include_once(processing_dir."/css/globals.php");
-
-?>
 .popup-modal-background {
     position: fixed;
     top: 0;
@@ -11,13 +5,14 @@ include_once(processing_dir."/css/globals.php");
     width: 100%;<?/* within the .page width */?>
     height: 100%;
     z-index: 1;
-    margin: auto;<?/* center */?>
+    text-align: center;<?/* center-align .popup-modal */?>
     overflow: hidden;<?/* no scroll since this messes with the % width centering */?>
 }
 .popup-modal {
     border: 1px solid black;
-    background-color: #fefefe;
     margin: 100px auto;<?/* 100px from the top and centered */?>
-    width: <? echo css_page_width_percent; ?>%;
-    height: 100px;
+    display: inline-block;<?/* allow centering by the parent's text-align */?>
+    padding: 20px;
+    border-radius: 20px;
+    opacity: 1;<?/* 0 = transparent */?>
 }

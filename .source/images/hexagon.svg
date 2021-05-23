@@ -1,7 +1,7 @@
 <?php
 
 if (!defined("processing_dir")) define("processing_dir", $argv[1]);
-include(processing_dir."/css/globals.php");
+include_once(processing_dir."/css/globals.php");
 
 ?>
 <? echo "<?"; ?>xml version="1.0" encoding="UTF-8"<? echo "?>"; ?> 
@@ -23,14 +23,12 @@ include(processing_dir."/css/globals.php");
 <style type="text/css"><![CDATA[
     .global {
         fill: none;
-        cursor: default;
         -webkit-touch-callout: none; /* iOS Safari */
         -webkit-user-select: none;   /* Chrome/Safari/Opera */
         -khtml-user-select: none;    /* Konqueror */
         -moz-user-select: none;      /* Firefox */
         -ms-user-select: none;       /* IE/Edge */
         user-select: none;
-        pointer-events: none;
     }
     .outer {
         fill: url(#goldGradient);
@@ -39,7 +37,17 @@ include(processing_dir."/css/globals.php");
         fill: white;
     }
     .inner {
-        fill: <? echo css_hexagon_profile_pic_grey; ?>;
+        fill: <? echo css_background_color1_hex; ?>;
+    }
+    .profile-pic-clicker {
+        pointer-events: visible;
+        cursor: pointer;
+        fill: white;
+        fill-opacity: 0;<?/* transparent */?>
+    }
+    .profile-pic-clicker:hover {
+        fill: white;
+        fill-opacity: 0.4;
     }
     .shine-lightgold {
         stop-color: #fcbf22;
@@ -50,15 +58,14 @@ include(processing_dir."/css/globals.php");
     .shine-white {
         stop-color: #faf0d9;
     }
-    #dude {
+    .dude {
         fill: white;
     }
-    #goldGradient {
+    .goldGradient {
         gradientUnits: objectBoundingBox;
     }
 ]]></style>
 <defs>
-    <!--rect x1="0" y1="0" width="260" height="300"/><circle cx="0" cy="0" r="150" /-->
 <?/*
     drawing a hexagon in an svg - not so simple!
 
@@ -78,12 +85,23 @@ include(processing_dir."/css/globals.php");
         id="hexagonShape"
         points="-130,-75 0,-150 130,-75 130,75 0,150 -130,75"
     />
-    <g id="dude">
+    <g id="dude" class="dude">
         <circle cx="0" cy="-300" r="90" />
-        <path d="M 0,0 L -130,-75 A 120,120 0 0,1 130,-75 z" />
+<?
+// create the body of the dude. an arc of radius 130 centered 75 up from the
+// bottom
+?>
+        <path d="M 0,0 L -130,-75 A 130,130 0 0,1 130,-75 z" />
     </g>
 <?/* color-gradient - start top right, end bottom left */?>
-    <linearGradient id="goldGradient" x1="1" y1="0" x2="0" y2="1">
+    <linearGradient
+        id="goldGradient"
+        class="goldGradient"
+        x1="1"
+        y1="0"
+        x2="0"
+        y2="1"
+    >
         <animateTransform
             attributeName="gradientTransform"
             begin="0s"
@@ -123,7 +141,24 @@ keySplines, but i wonder if it runs smoothly. will have to check that some day.
     <use href="#hexagonShape" transform="scale(0.95)" class="middle" />
     <use href="#hexagonShape" transform="scale(0.90)" class="inner" />
 </g>
+<?
+// move the dude down by +286 ...
+// +300 = down all the way to the bottom
+// -7.5 = back up for the width of the outer hexagon (gold border) since
+// 150 * 0.05 = 7.5
+// -7.5 = back up for the width of the inner hexagon (white border)
+// +1 otherwise there will be an artifact line between the dude and the grey
+// background
+?>
 <g transform="translate(150,286)">
     <use href="#dude" transform="scale(0.55)" />
+</g>
+<g transform="translate(150,150)">
+    <use
+        id="profilePicClicker"
+        href="#hexagonShape"
+        transform="scale(0.90)"
+        class="profile-pic-clicker"
+    />
 </g>
 </svg>

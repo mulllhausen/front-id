@@ -59,4 +59,11 @@ function ld_json($file, $name)
     return json_encode($ld_json);
 }
 
+function include_once_and_explain($file)
+{
+    $comment_line = "/".str_repeat("*", 78)."/\n\n";
+    $descr = " ".explode(".", basename($file))[0]." ";
+    echo "\n".substr_replace($comment_line, $descr, 2, strlen($descr));
+    include_once($file);
+}
 ?>

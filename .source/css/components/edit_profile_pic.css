@@ -1,0 +1,45 @@
+<?
+// the image upload styling heree is thanks to
+// tympanus.net/codrops/2015/09/15/styling-customizing-file-inputs-smart-way/
+?>
+.edit-profile-pic-popup-content-outer {
+}
+.edit-profile-pic-drop-area {
+    position: relative;
+    margin-bottom: 20px;
+}
+.edit-profile-pic-dude {
+    width: 200px;
+}
+.edit-profile-pic-upload {
+<?
+// the effect we want is display: none; but we cannot do this since it breaks
+// accessibility
+?>
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.edit-profile-pic-upload + label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    background-color: transparent;
+}
+.edit-profile-pic-upload:focus + label,
+.edit-profile-pic-upload:focus + label:hover {
+<?
+// blur the area slightly when active
+?>
+    background-color: white;
+    opacity: 0.2;<?/* 0 = transparent */?>
+}
+.edit-profile-pic-button-area {
+}

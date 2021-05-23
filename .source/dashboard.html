@@ -58,6 +58,9 @@ var siteGlobals = {};
                 nonExistentFunctionThatHaltsJavascript();
             }
         </script>
+        <div class="content-for-modals" style="display:none;">
+<? include(processing_dir."/html/components/edit_profile_pic.html"); ?>
+        </div>
 <?/*
     .page has all the content in it. on pc it is a vertical strip down the
     middle. on phone and tablet it is the full page width.
@@ -66,5 +69,6 @@ var siteGlobals = {};
 <? include(processing_dir."/html/components/header.html"); ?>
 <? include(processing_dir."/html/components/hexagon_profile_pic.html"); ?>
         </div>
+        <script>triggerEvent(document, 'ready');</script>
     </body>
 </html>

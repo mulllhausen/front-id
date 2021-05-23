@@ -1,5 +1,23 @@
-addEvent(window, 'load', function () {
-    addEvent(document.getElementById('profilePicClicker'), 'click', function () {
-        popup('editProfilePic');
+<?php
+
+if (!defined("processing_dir")) define("processing_dir", $argv[1]);
+include_once(processing_dir."/config.php");
+
+?>
+function popupEditProfilePic() {
+    showPopup('editProfilePic');
+    console.log('editProfilePic');
+}
+addEvent(document, 'ready', function () {
+<? if (build_for == "dev") { ?>
+    var clickOverlay = document.getElementById('profilePicClicker');
+    addEvent(clickOverlay, 'click', popupEditProfilePic);
+<? } ?>
+    var hexagonSVGEl = document.getElementById('hexagonProfilePic');
+    addEvent(hexagonSVGEl, 'load', function () {
+        var svgDoc = hexagonSVGEl.contentDocument;
+        if (svgDoc == null) return;
+        var clickArea = svgDoc.getElementById('profilePicClicker');
+        addEvent(clickArea, 'click', popupEditProfilePic);
     });
 });

@@ -21,5 +21,15 @@ html, body {
     text-decoration: none;
     text-shadow: none;
     background-color: <? echo css_background_color0_hex; ?>;
-<?/* overflow: auto; do not show a scrollbar */?>
+}
+button {
+    min-width: 100px;
+    border-width: 0;
+    font-family: monospace;
+    color: white;
+    background-color: <? echo css_background_color1_hex; ?>;
+}
+button:hover,
+button:focus {
+    cursor: pointer;
 }

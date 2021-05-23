@@ -2,11 +2,13 @@
 
 if (!defined("processing_dir")) define("processing_dir", $argv[1]);
 include_once(processing_dir."/css/globals.php");
+include_once(processing_dir."/functions.php");
 
-include_once(processing_dir."/css/components/raw_elements.css");
-include_once(processing_dir."/css/components/popup_modal.css");
-include_once(processing_dir."/css/components/layout.css");
-include_once(processing_dir."/css/components/header.css");
-include_once(processing_dir."/css/components/hexagon_profile_pic.css");
+include_once_and_explain(processing_dir."/css/components/raw_elements.css");
+include_once_and_explain(processing_dir."/css/components/popup_modal.css");
+include_once_and_explain(processing_dir."/css/components/layout.css");
+include_once_and_explain(processing_dir."/css/components/header.css");
+include_once_and_explain(processing_dir."/css/components/hexagon_profile_pic.css");
+include_once_and_explain(processing_dir."/css/components/edit_profile_pic.css");
 
 ?>
