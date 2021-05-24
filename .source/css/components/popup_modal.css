@@ -1,3 +1,9 @@
+<?php
+
+if (!defined("processing_dir")) define("processing_dir", $argv[1]);
+include_once(processing_dir."/css/globals.php");
+
+?>
 .popup-modal-background {
     position: fixed;
     top: 0;
@@ -15,4 +21,5 @@
     padding: 20px;
     border-radius: 20px;
     opacity: 1;<?/* 0 = transparent */?>
+    background-color: <? echo css_background_color0_hex; ?>
 }

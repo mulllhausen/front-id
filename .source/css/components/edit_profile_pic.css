@@ -7,9 +7,15 @@
 .edit-profile-pic-drop-area {
     position: relative;
     margin-bottom: 20px;
+    width: 200px;
+    height: 200px;
+    border: 2px dashed blue;
 }
 .edit-profile-pic-dude {
-    width: 200px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
 }
 .edit-profile-pic-upload {
 <?

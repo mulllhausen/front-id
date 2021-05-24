@@ -34,7 +34,7 @@ include_once(processing_dir."/css/globals.php");
         fill: white;
     }
 ]]></style>
-<rect x="0" y="0" width="300" height="300" stroke="red" stroke-width="1" />
+<rect x="0" y="0" width="300" height="300" stroke-width="0" />
 <g transform="translate(150,375)">
     <g class="dude" transform="scale(0.85)">
         <circle cx="0" cy="-300" r="90" />
