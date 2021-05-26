@@ -17,14 +17,7 @@
 <style type="text/css"><![CDATA[
     .global {
         fill: none;
-        cursor: default;
-        -webkit-touch-callout: none; /* iOS Safari */
-        -webkit-user-select: none;   /* Chrome/Safari/Opera */
-        -khtml-user-select: none;    /* Konqueror */
-        -moz-user-select: none;      /* Firefox */
-        -ms-user-select: none;       /* IE/Edge */
-        user-select: none;
-        pointer-events: none;
+        -webkit-touch-callout: none;         -webkit-user-select: none;         -khtml-user-select: none;         -moz-user-select: none;         -ms-user-select: none;         user-select: none;
     }
     .outer {
         fill: url(#goldGradient);
@@ -35,6 +28,15 @@
     .inner {
         fill: #d1d5da;
     }
+    .profile-pic-clicker {
+        pointer-events: visible;
+        cursor: pointer;
+        fill: white;
+        fill-opacity: 0;    }
+    .profile-pic-clicker:hover {
+        fill: white;
+        fill-opacity: 0.4;
+    }
     .shine-lightgold {
         stop-color: #fcbf22;
     }
@@ -44,24 +46,30 @@
     .shine-white {
         stop-color: #faf0d9;
     }
-    #dude {
+    .dude {
         fill: white;
     }
-    #goldGradient {
+    .goldGradient {
         gradientUnits: objectBoundingBox;
     }
 ]]></style>
 <defs>
-    <!--rect x1="0" y1="0" width="260" height="300"/><circle cx="0" cy="0" r="150" /-->
     <polygon
         id="hexagonShape"
         points="-130,-75 0,-150 130,-75 130,75 0,150 -130,75"
     />
-    <g id="dude">
+    <g id="dude" class="dude">
         <circle cx="0" cy="-300" r="90" />
-        <path d="M 0,0 L -130,-75 A 120,120 0 0,1 130,-75 z" />
+        <path d="M 0,0 L -130,-75 A 130,130 0 0,1 130,-75 z" />
     </g>
-    <linearGradient id="goldGradient" x1="1" y1="0" x2="0" y2="1">
+    <linearGradient
+        id="goldGradient"
+        class="goldGradient"
+        x1="1"
+        y1="0"
+        x2="0"
+        y2="1"
+    >
         <animateTransform
             attributeName="gradientTransform"
             begin="0s"
@@ -93,5 +101,13 @@
 </g>
 <g transform="translate(150,286)">
     <use href="#dude" transform="scale(0.55)" />
+</g>
+<g transform="translate(150,150)">
+    <use
+        id="profilePicClicker"
+        href="#hexagonShape"
+        transform="scale(0.90)"
+        class="profile-pic-clicker"
+    />
 </g>
 </svg>

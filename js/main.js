@@ -1,4 +1,7 @@
 // todo - bomb out if any function is not supported
+
+/* utils **********************************************************************/
+
 NodeList.prototype.isNodeList = HTMLCollection.prototype.isNodeList = function () {
     return true;
 };
@@ -10,7 +13,6 @@ function isNodeList(elements) {
         return false;
     }
 }
-
 function addEvent(element, types, callback) {
     if (element == null || typeof(element) == 'undefined') return;
     var elements = (isNodeList(element) ? element : [element]);
@@ -29,15 +31,38 @@ function addEvent(element, types, callback) {
         }
     }
 }
-function showPopup(popupID) {
-    document.getElementById('popupModal').style.display = 'inline-block';
+function triggerEvent(element, type) {
+    if (element == null || typeof(element) == 'undefined') return;
+    var elements = (isNodeList(element) ? element : [element]);
+    for (var elI = 0; elI < elements.length; elI++) {
+        var el = elements[elI];
+        if ('createEvent' in document) {
+            var evt = document.createEvent('HTMLEvents');
+            evt.initEvent(type, false, true);
+            el.dispatchEvent(evt);
+        }
+        else el.fireEvent('on' + type);
+    }
 }
 
-function hidePopup(popupID) {
-    document.getElementById('popupModal').style.display = 'none';
+/* popup_modal ****************************************************************/
+
+function showPopup(contentID) {
+    var contentElCopy = document.getElementById(contentID).cloneNode(true);
+    document.getElementById('popupModal').appendChild(contentElCopy);
+    document.getElementById('popupModalBackground').style.display = 'inline-block';
 }
-addEvent(window, 'load', function () {
-    addEvent(document.getElementById('profilePicClicker'), 'click', function () {
-        popup('editProfilePic');
+
+function hidePopup() {
+    document.getElementById('popupModal').innerHTML = '';
+    document.getElementById('popupModalBackground').style.display = 'none';
+}
+addEvent(document, 'ready', function () {
+    addEvent(document.getElementById('popupModalBackground'), 'click', hidePopup);
+    addEvent(document.getElementById('popupModal'), 'click', function (event) {
+        event.stopPropagation();
     });
 });
+
+/* hexagon_profile_pic ********************************************************/
+
