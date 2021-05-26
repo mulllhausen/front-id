@@ -23,11 +23,11 @@ include_once(processing_dir."/css/globals.php");
 <style type="text/css"><![CDATA[
     .global {
         fill: none;
-        -webkit-touch-callout: none; <?/* iOS Safari          */?>
-        -webkit-user-select: none; <?/*   Chrome/Safari/Opera */?>
-        -khtml-user-select: none; <?/*    Konqueror           */?>
-        -moz-user-select: none; <?/*      Firefox             */?>
-        -ms-user-select: none; <?/*       IE/Edge             */?>
+        -webkit-touch-callout: none;<?/* iOS Safari          */?> 
+        -webkit-user-select: none;<?/*   Chrome/Safari/Opera */?> 
+        -khtml-user-select: none;<?/*    Konqueror           */?> 
+        -moz-user-select: none;<?/*      Firefox             */?> 
+        -ms-user-select: none;<?/*       IE/Edge             */?> 
         user-select: none;
     }
     .outer {
@@ -43,7 +43,7 @@ include_once(processing_dir."/css/globals.php");
         pointer-events: visible;
         cursor: pointer;
         fill: white;
-        fill-opacity: 0;<?/* transparent */?>
+        fill-opacity: 0;<?/* transparent */?> 
     }
     .profile-pic-clicker:hover {
         fill: white;

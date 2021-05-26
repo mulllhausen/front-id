@@ -1,9 +1,9 @@
 <?php
 
 if (!defined("processing_dir")) define("processing_dir", $argv[1]);
-include_once(processing_dir."/config.php");
-include_once(processing_dir."/css/globals.php");
-include_once(processing_dir."/html/globals.php");
+require_once(processing_dir."/config.php");
+require_once(processing_dir."/css/globals.php");
+require_once(processing_dir."/html/globals.php");
 
 ?>
 .hexagon-container {
