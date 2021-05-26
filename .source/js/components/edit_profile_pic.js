@@ -1,12 +1,13 @@
 <?php
 
 if (!defined("processing_dir")) define("processing_dir", $argv[1]);
-include_once(processing_dir."/config.php");
+require_once(processing_dir."/config.php");
 
 ?>
 function popupEditProfilePic() {
     showPopup('editProfilePic');
-    console.log('editProfilePic');
+    document.getElementById('editProfilePicUpload').innerHTML =
+    'click here to upload or drag and drop';
 }
 addEvent(document, 'ready', function () {
 <? if (build_for == "dev") { ?>

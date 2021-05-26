@@ -22,11 +22,11 @@ include_once(processing_dir."/css/globals.php");
 >
 <style type="text/css"><![CDATA[
     .global {
-        -webkit-touch-callout: none; <?/* iOS Safari          */?>
-        -webkit-user-select: none; <?/*   Chrome/Safari/Opera */?>
-        -khtml-user-select: none; <?/*    Konqueror           */?>
-        -moz-user-select: none; <?/*      Firefox             */?>
-        -ms-user-select: none; <?/*       IE/Edge             */?>
+        -webkit-touch-callout: none;<?/* iOS Safari          */?> 
+        -webkit-user-select: none;<?/*   Chrome/Safari/Opera */?> 
+        -khtml-user-select: none;<?/*    Konqueror           */?> 
+        -moz-user-select: none;<?/*      Firefox             */?> 
+        -ms-user-select: none;<?/*       IE/Edge             */?> 
         user-select: none;
     }
     .background {
