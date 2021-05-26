@@ -7,11 +7,11 @@ include_once(processing_dir."/css/globals.php");
 html, body {
     margin: 0;
     padding: 0;
-
+<??>
     min-width: 100%;
     width: 100%;
     max-width: 100%;
-
+<??>
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 16px;
     -webkit-text-size-adjust: 100%;
@@ -28,6 +28,17 @@ button {
     font-family: monospace;
     color: white;
     background-color: <? echo css_background_color1_hex; ?>;
+<?
+// top right bottom left
+// not sure why, but an invisible right-margin is being applied. so the buttons
+// are not actually touching horizontally due to margin-left and margin-right
+// being 0
+?>
+    margin: 0 0 5px 0;
+<??>
+    padding: 10px;
+    border: none;
+    display: inline-block;
 }
 button:hover,
 button:focus {

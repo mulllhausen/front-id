@@ -8,18 +8,18 @@ include_once(processing_dir."/css/globals.php");
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;<?/* within the .page width */?>
+    width: 100%;<?/* within the .page width */?> 
     height: 100%;
     z-index: 1;
-    text-align: center;<?/* center-align .popup-modal */?>
-    overflow: hidden;<?/* no scroll since this messes with the % width centering */?>
+    text-align: center;<?/* center-align .popup-modal */?> 
+    overflow: hidden;<?/* no scroll since this messes with the % width centering */?> 
 }
 .popup-modal {
     border: 1px solid black;
-    margin: 100px auto;<?/* 100px from the top and centered */?>
-    display: inline-block;<?/* allow centering by the parent's text-align */?>
+    margin: 100px auto;<?/* 100px from the top and centered */?> 
+    display: inline-block;<?/* allow centering by the parent's text-align */?> 
     padding: 20px;
     border-radius: 20px;
-    opacity: 1;<?/* 0 = transparent */?>
-    background-color: <? echo css_background_color0_hex; ?>
+    opacity: 1;<?/* 0 = transparent */?> 
+    background-color: <? echo css_background_color0_hex; ?> 
 }

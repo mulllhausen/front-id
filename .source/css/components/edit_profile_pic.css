@@ -1,8 +1,10 @@
 <?
-// the image upload styling heree is thanks to
+// the image upload styling here is thanks to
 // tympanus.net/codrops/2015/09/15/styling-customizing-file-inputs-smart-way/
 ?>
 .edit-profile-pic-popup-content-outer {
+    width: 300px;
+    text-align: center;
 }
 .edit-profile-pic-drop-area {
     position: relative;
@@ -10,6 +12,7 @@
     width: 200px;
     height: 200px;
     border: 2px dashed blue;
+    display: inline-block;<?/* horizontally center this element within parent */?> 
 }
 .edit-profile-pic-dude {
     position: absolute;
@@ -45,7 +48,8 @@
 // blur the area slightly when active
 ?>
     background-color: white;
-    opacity: 0.2;<?/* 0 = transparent */?>
+    opacity: 0.2;<?/* 0 = transparent */?> 
 }
 .edit-profile-pic-button-area {
+    width: 100%;
 }

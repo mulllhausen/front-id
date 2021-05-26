@@ -22,19 +22,21 @@ include_once(processing_dir."/css/globals.php");
 >
 <style type="text/css"><![CDATA[
     .global {
-        fill: <? echo css_background_color1_hex; ?>;
-        -webkit-touch-callout: none; /* iOS Safari */
-        -webkit-user-select: none;   /* Chrome/Safari/Opera */
-        -khtml-user-select: none;    /* Konqueror */
-        -moz-user-select: none;      /* Firefox */
-        -ms-user-select: none;       /* IE/Edge */
+        -webkit-touch-callout: none; <?/* iOS Safari          */?>
+        -webkit-user-select: none; <?/*   Chrome/Safari/Opera */?>
+        -khtml-user-select: none; <?/*    Konqueror           */?>
+        -moz-user-select: none; <?/*      Firefox             */?>
+        -ms-user-select: none; <?/*       IE/Edge             */?>
         user-select: none;
+    }
+    .background {
+        fill: <? echo css_background_color1_hex; ?>;
     }
     .dude {
         fill: white;
     }
 ]]></style>
-<rect x="0" y="0" width="300" height="300" stroke-width="0" />
+<rect class="background" x="0" y="0" width="100%" height="100%" />
 <g transform="translate(150,375)">
     <g class="dude" transform="scale(0.85)">
         <circle cx="0" cy="-300" r="90" />

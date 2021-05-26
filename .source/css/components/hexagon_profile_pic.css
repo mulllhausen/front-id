@@ -44,7 +44,6 @@ if (build_for == "dev") {
 
     ); ?>px;
     margin-left: -<? echo (css_hexagon_profile_pic_click_width / 2); ?>px;
-
 <?
 // make the clicker into a circle so that roughly the hexagon can be clicked
 ?>

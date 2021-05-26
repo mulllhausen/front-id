@@ -6,5 +6,5 @@ include_once(processing_dir."/css/globals.php");
 ?>
 .page {
     width: <? echo css_page_width_percent; ?>%;
-    margin: auto;<?/* center */?>
+    margin: auto;<?/* center */?> 
 }
