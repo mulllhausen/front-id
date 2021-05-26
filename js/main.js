@@ -64,5 +64,19 @@ addEvent(document, 'ready', function () {
     });
 });
 
-/* hexagon_profile_pic ********************************************************/
+/* edit_profile_pic ***********************************************************/
 
+function popupEditProfilePic() {
+    showPopup('editProfilePic');
+    document.getElementById('editProfilePicUpload').innerHTML =
+    'click here to upload or drag and drop';
+}
+addEvent(document, 'ready', function () {
+    var hexagonSVGEl = document.getElementById('hexagonProfilePic');
+    addEvent(hexagonSVGEl, 'load', function () {
+        var svgDoc = hexagonSVGEl.contentDocument;
+        if (svgDoc == null) return;
+        var clickArea = svgDoc.getElementById('profilePicClicker');
+        addEvent(clickArea, 'click', popupEditProfilePic);
+    });
+});
