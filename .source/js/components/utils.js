@@ -60,3 +60,9 @@ function triggerEvent(element, type) {
         else el.fireEvent('on' + type);
     }
 }
+function toLocalStorage(k,v) {
+    localStorage.setItem(k, JSON.stringify(v));
+}
+function fromLocalStorage(k) {
+    return JSON.parse(localStorage.getItem(k));
+}

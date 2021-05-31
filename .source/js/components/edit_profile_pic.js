@@ -3,22 +3,152 @@
 if (!defined("processing_dir")) define("processing_dir", $argv[1]);
 require_once(processing_dir."/config.php");
 
+// catch upload
+// convert to base64 blob
+// set as <img> content
+// only save blob to localstorage if they click ok
 ?>
-function popupEditProfilePic() {
-    showPopup('editProfilePic');
-    document.getElementById('editProfilePicUpload').innerHTML =
-    'click here to upload or drag and drop';
-}
+var tmpUploadedImageBase64 = '';<?/* init */?>
+
 addEvent(document, 'ready', function () {
 <? if (build_for == "dev") { ?>
-    var clickOverlay = document.getElementById('profilePicClicker');
-    addEvent(clickOverlay, 'click', popupEditProfilePic);
+    addEvent(
+        document.getElementById('profilePicClicker'),
+        'click',
+        popupEditProfilePic
+    );
 <? } ?>
-    var hexagonSVGEl = document.getElementById('hexagonProfilePic');
-    addEvent(hexagonSVGEl, 'load', function () {
-        var svgDoc = hexagonSVGEl.contentDocument;
-        if (svgDoc == null) return;
-        var clickArea = svgDoc.getElementById('profilePicClicker');
-        addEvent(clickArea, 'click', popupEditProfilePic);
-    });
+    addEvent(
+        document.getElementById('hexagonProfilePic'),
+        'load',
+        addSVGClickEvent
+    );
 });
+
+function addSVGClickEvent() {
+    var svgDoc = document.getElementById('hexagonProfilePic').contentDocument;
+    if (svgDoc == null) return;
+    var clickArea = svgDoc.getElementById('profilePicClicker');
+    addEvent(clickArea, 'click', popupEditProfilePic);
+}
+
+function popupEditProfilePic() {
+    showPopup('editProfilePic');
+    var img = document.getElementById('editProfilePicUploadedImg');
+    var profile = fromLocalStorage('profile');
+    if (profile != null) {
+        var profilePicB64 = profile.picB4;
+        renderImgFromBase64(img, profilePicB64);
+    }
+    addEvent(img, 'load', freeImgMemory);
+    addEvent(
+        document.getElementById('editProfilePicUpload'),
+        'change',
+        picUploadHandler
+    );
+    addEvent(
+        document.getElementById('editProfilePicChange'),
+        'click',
+        changePicHandler
+    );
+    addEvent(
+        document.getElementById('editProfilePicCrop'),
+        'click',
+        cropPicHandler
+    );
+    addEvent(
+        document.getElementById('editProfilePicDone'),
+        'click',
+        donePicHandler
+    );
+    addEvent(
+        document.getElementById('editProfilePicCancel'),
+        'click',
+        cancelPicHandler
+    );
+}
+
+function cancelPicHandler() {
+    tmpUploadedImageBase64 = '';<?/* reset global */?>
+    hidePopup();
+}
+function changePicHandler() {
+}
+function cropPicHandler() {
+}
+function donePicHandler() {
+    if (tmpUploadedImageBase64 == '') return hidePopup();
+
+    var profile = fromLocalStorage('profile');
+    profile.picB64 = tmpUploadedImageBase64;
+    toLocalStorage('profile', profile);
+    hidePopup();
+}
+
+function freeImgMemory() {
+    URL.revokeObjectURL(this.src);
+}
+
+function picUploadHandler() {
+    if (!this.files) return displayUploadedImg('hide');
+    if (this.files.length == 0) return displayUploadedImg('hide');
+    var uploadedFile = this.files[0];
+
+    file2Base64(uploadedFile).then(function (b64) {
+        renderImgFromBase64(
+            document.getElementById('editProfilePicUploadedImg'),
+            b64
+        );
+        displayUploadedImg('show');
+        tmpUploadedImageBase64 = b64;<?/* update global */?> 
+    });
+}
+
+function file2Base64(file) {
+    return new Promise(function (resolve, reject) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            resolve(reader.result);
+        };
+        reader.onerror = function (error) {
+            reject(error);
+        };
+    });
+}
+
+function renderImgFromBase64(img, b64) {
+<?
+// convert the base 64 string into a native byte array
+?>
+    var bytes = new Uint8Array(b64.length / 2);
+    for (var i = 0; i < b64.length; i += 2) {
+        bytes[i / 2] = parseInt(b64.substring(i, i + 2), 16);
+    }
+<?
+// make a blob from the bytes
+?>
+    var blob = new Blob([bytes], {type: 'image/png'});
+<?
+// make a url for the blob
+?>
+    img.src = URL.createObjectURL(blob);
+}
+
+function displayUploadedImg(status) {
+    var svg = document.getElementById('editProfilePicDude');
+    var img = document.getElementById('editProfilePicUploadedImg');
+    var label = document.querySelector('#editProfilePicUpload + label');
+    switch (status) {
+        case 'show':
+            img.style.display = 'block';
+            svg.style.display = 'none';
+            label.style.display = 'none';
+            break;
+        case 'hide':
+            img.style.display = 'none';
+            svg.style.display = 'inline-block';
+            label.style.display = 'block';
+            break;
+    }
+}
