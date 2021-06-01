@@ -36,9 +36,8 @@ function popupEditProfilePic() {
     showPopup('editProfilePic');
     var img = document.getElementById('editProfilePicUploadedImg');
     var profile = fromLocalStorage('profile');
-    if (profile != null) {
-        var profilePicB64 = profile.picB4;
-        renderImgFromBase64(img, profilePicB64);
+    if (profile != null && profile.hasOwnProperty('picB64')) {
+        img.src = profile.picB64;
     }
     addEvent(img, 'load', freeImgMemory);
     addEvent(
@@ -80,6 +79,7 @@ function donePicHandler() {
     if (tmpUploadedImageBase64 == '') return hidePopup();
 
     var profile = fromLocalStorage('profile');
+    if (profile == null) profile = {};<?/* init global */?>
     profile.picB64 = tmpUploadedImageBase64;
     toLocalStorage('profile', profile);
     hidePopup();
@@ -95,12 +95,10 @@ function picUploadHandler() {
     var uploadedFile = this.files[0];
 
     file2Base64(uploadedFile).then(function (b64) {
-        renderImgFromBase64(
-            document.getElementById('editProfilePicUploadedImg'),
-            b64
-        );
+        document.getElementById('editProfilePicUploadedImg').src = b64;
         displayUploadedImg('show');
         tmpUploadedImageBase64 = b64;<?/* update global */?> 
+        toggleEditMode('crop');
     });
 }
 
@@ -117,24 +115,6 @@ function file2Base64(file) {
     });
 }
 
-function renderImgFromBase64(img, b64) {
-<?
-// convert the base 64 string into a native byte array
-?>
-    var bytes = new Uint8Array(b64.length / 2);
-    for (var i = 0; i < b64.length; i += 2) {
-        bytes[i / 2] = parseInt(b64.substring(i, i + 2), 16);
-    }
-<?
-// make a blob from the bytes
-?>
-    var blob = new Blob([bytes], {type: 'image/png'});
-<?
-// make a url for the blob
-?>
-    img.src = URL.createObjectURL(blob);
-}
-
 function displayUploadedImg(status) {
     var svg = document.getElementById('editProfilePicDude');
     var img = document.getElementById('editProfilePicUploadedImg');
@@ -149,6 +129,21 @@ function displayUploadedImg(status) {
             img.style.display = 'none';
             svg.style.display = 'inline-block';
             label.style.display = 'block';
+            break;
+    }
+}
+
+function toggleEditMode(mode) {
+    var btnChange = document.getElementById('editProfilePicChange');
+    var btnCrop = document.getElementById('editProfilePicCrop');
+    switch (mode) {
+        case 'change':
+            btnCrop.style.display = 'none';
+            btnChange.style.display = 'inline-block';
+            break;
+        case 'crop':
+            btnCrop.style.display = 'inline-block';
+            btnChange.style.display = 'none';
             break;
     }
 }
