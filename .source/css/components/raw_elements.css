@@ -44,3 +44,9 @@ button:hover,
 button:focus {
     cursor: pointer;
 }
+select.invalid {
+    border: 1px solid red;
+}
+select option[disabled] {
+    display: none;
+}

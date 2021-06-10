@@ -10,5 +10,6 @@ require_once_and_explain(processing_dir."/css/components/layout.css");
 require_once_and_explain(processing_dir."/css/components/header.css");
 require_once_and_explain(processing_dir."/css/components/hexagon_profile_pic.css");
 require_once_and_explain(processing_dir."/css/components/edit_profile_pic.css");
+require_once_and_explain(processing_dir."/css/components/profile_data.css");
 
 ?>

@@ -1,0 +1,23 @@
+<?php
+
+if (!defined("processing_dir")) define("processing_dir", $argv[1]);
+require_once(processing_dir."/css/globals.php");
+
+?>
+.profile-data-area {
+    margin-top: <? echo (css_hexagon_profile_pic_height / 2); ?>px;
+    width: 100%;
+}
+.profile-data-area .row {
+    margin-bottom: 15px;
+}
+.profile-data-area label {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+.profile-data-birthday-error {
+    color: red;
+    clear: both;
+    display: block;
+    margin-top: 5px;
+}
