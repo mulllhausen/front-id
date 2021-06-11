@@ -1,3 +1,16 @@
-css/components/
-js/components/
-html
+# files and directories ignored in production (all are still observed in .source)
+
+/css/components/
+/css/globals.php
+/js/components/
+/js/manifest.json
+/html
+/config.sh
+/config.php
+/build-site.sh
+/functions.php
+/globals.php
+
+# files ignored everywhere
+
+build-site-err.txt
