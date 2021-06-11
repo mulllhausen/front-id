@@ -1,0 +1,27 @@
+<div id="editProfilePic" class="edit-profile-pic-popup-content-outer">
+    <p>edit profile picture</p>
+    <div id="editProfilePicDropArea" class="edit-profile-pic-drop-area">
+        <object
+            id="editProfilePicDude"
+            type="image/svg+xml"
+            class="edit-profile-pic-dude"
+            data="https://frontid.null.place/images/dude.svg?hash=ZDVkND"
+        ></object>
+        <input
+            type="file"
+            id="editProfilePicUpload"
+            class="edit-profile-pic-upload"
+            accept="image/*"
+        >
+        <label for="editProfilePicUpload">
+            <span>click to upload</span>
+        </label>
+        <img id="editProfilePicUploadedImg" class="editProfilePicUploadedImg">
+    </div>
+    <div class="edit-profile-pic-button-area">
+        <button id="editProfilePicChange" style="display:none;">change</button>
+        <button id="editProfilePicCrop" style="display:none;">crop</button>
+        <button id="editProfilePicDone">done</button>
+        <button id="editProfilePicCancel">cancel</button>
+    </div>
+</div>
