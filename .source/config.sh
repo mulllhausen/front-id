@@ -7,7 +7,6 @@ author="mulllhausen"
 sitename="frontID"
 site_description="the frontend id system"
 source_dir="."
-processing_dir="../processing"
 production_dir="../"
 tmp_err_log="build-site-err.txt"
 
@@ -25,9 +24,5 @@ files_for_processing="*"
 explain_mandatory_files_for_processing="php files and config.sh"
 mandatory_files_for_processing="*php config.sh"
 
-# files to proces with php. left first, right last (must be a subset of
-# site_file_extensions)
+# files to proces with php. left first, right last
 process_file_extensions="svg css js html"
-
-# the files that will be copied from processing to production - no special order
-production_file_extensions="html css js svg ico png"

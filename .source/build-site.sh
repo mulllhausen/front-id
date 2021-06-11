@@ -1,11 +1,8 @@
 #!/bin/bash
 
 # a minimalistic php site builder.
-# 1) files are copied from the source dir to the specified processing dir
+# 1) files are copied from the source dir to the specified production dir
 # 2) files are processed and overwritten
-# 3) files are copied from the processing dir to the production dir
-# 4) the processing dir is deleted
-# this way production is only updated if everything is successful
 
 die() {
     echo -e "$*" 1>&2
@@ -43,7 +40,6 @@ fi
 tmp_err_log="$abs_path/$tmp_err_log"
 source_dir="$abs_path/$source_dir"
 production_dir="$abs_path/$production_dir"
-processing_dir="$abs_path/$processing_dir"
 
 # check path variables exist
 [[ ! -d "$source_dir" ]] && die "source dir ($source_dir/) does not exist"
@@ -74,38 +70,11 @@ fi
 source_dir="$(unset CDPATH && cd "$source_dir" && pwd)"
 production_dir="$(unset CDPATH && cd "$production_dir" && pwd)"
 
-# if the processing dir exists ...
-ree=""
-if [[ -d "$processing_dir" ]]; then
-    # normalize this path variable (purely for a pretty echo)
-    processing_dir="$(unset CDPATH && cd "$processing_dir" && pwd)"
-
-    echo -n "deleting the processing dir ($processing_dir/) ... "
-    rm -rf "$processing_dir" 2>"$tmp_err_log"
-    if [[ $? == 0 ]]; then
-        echo "done"
-        ree="re"
-    else
-        die "fail"
-    fi
-fi
-
-echo -n "${ree}creating the processing dir ($processing_dir/) ... "
-mkdir "$processing_dir" 2>"$tmp_err_log"
-if [[ $? == 0 ]]; then
-    echo "done"
-else
-    die "fail"
-fi
-
-# normalize the final path variable (purely for a pretty echo)
-processing_dir="$(unset CDPATH && cd "$processing_dir" && pwd)"
-
 echo -n "copying $explain_files_for_processing file(s) from the source dir" \
-"($source_dir/) to the processing dir ($processing_dir/) ... "
+"($source_dir/) to the production dir ($production_dir/) ... "
 
 rsync -a --prune-empty-dirs --include="*/" --include="$files_for_processing" \
---exclude="*" "$source_dir/"* "$processing_dir/" 2>"$tmp_err_log"
+--exclude="*" "$source_dir/"* "$production_dir/" 2>"$tmp_err_log"
 
 if [[ $? == 0 ]]; then
     echo "done"
@@ -114,7 +83,7 @@ else
 fi
 
 # if we are processing all files then the mandatory files will already have been
-# copied from source to processing. however if we are not processing all files
+# copied from source to production. however if we are not processing all files
 # then we need to copy the mandatory files over
 if [[ "$explain_files_for_processing" != "all" ]]; then
     # $mandatory_files_for_processing may contain *
@@ -122,11 +91,11 @@ if [[ "$explain_files_for_processing" != "all" ]]; then
     set -f # disable globbing
     for f in $mandatory_files_for_processing; do
         echo -n "copying $f file(s) from the source dir ($source_dir/) to the" \
-        "processing dir ($processing_dir/) ... "
+        "production dir ($production_dir/) ... "
 
         set +f # enable globbing
         rsync -a --prune-empty-dirs --include="*/" --include="$f" \
-        --exclude="*" "$source_dir/"* "$processing_dir/" 2>"$tmp_err_log"
+        --exclude="*" "$source_dir/"* "$production_dir/" 2>"$tmp_err_log"
 
         if [[ $? == 0 ]]; then
             echo "done"
@@ -138,17 +107,16 @@ if [[ "$explain_files_for_processing" != "all" ]]; then
     set +f # enable globbing
 fi
 
-echo -n "substituting variables in $processing_dir/config.sh with their" \
+echo -n "substituting variables in $production_dir/config.sh with their" \
 "values ... "
-sed "$processing_dir/config.sh" > "$processing_dir/config.sh.tmp" \
+sed "$production_dir/config.sh" > "$production_dir/config.sh.tmp" \
 2>"$tmp_err_log" \
 -e "s|\(source_dir=\"\).*\(\"$\)|\1$source_dir\2|" \
--e "s|\(processing_dir=\"\).*\(\"$\)|\1$processing_dir\2|" \
 -e "s|\(production_dir=\"\).*\(\"$\)|\1$production_dir\2|" \
 -e "s|\$production_dir|$production_dir|"
 
 if [[ $? == 0 ]]; then
-    mv "$processing_dir/config.sh.tmp" "$processing_dir/config.sh"
+    mv "$production_dir/config.sh.tmp" "$production_dir/config.sh"
     echo "done"
 else
     die "fail"
@@ -156,7 +124,7 @@ fi
 
 # list and sort files using $process_file_extensions
 for extension in $process_file_extensions; do
-    files_with_extension="$(find "$processing_dir" -type f -name "*.$extension")"
+    files_with_extension="$(find "$production_dir" -type f -name "*.$extension")"
     process_files="$process_files $files_with_extension"
 done
 # note: $process_files has a space at the start, but this is ignored by the
@@ -165,45 +133,15 @@ done
 # process the specified files using php
 for f in $process_files; do
     echo -n "processing file $f ... "
-    php "$f" "$processing_dir" > "$f.tmp" 2>"$tmp_err_log"
+    php "$f" "$production_dir" > "$f.tmp" 2>"$tmp_err_log"
     if [[ $? == 0 ]]; then
         mv "$f.tmp" "$f"
         echo "done"
     else
-        die "fail\nstopped processing files now\nproduction is unchanged"
+        die "fail\nstopped processing files now"
     fi
 done
  
-# copy the specified files to production
-for extension in $production_file_extensions; do
-    files_with_extension="$(find "$processing_dir" -type f -name "*.$extension")"
-    if [[ "$files_with_extension" == "" ]]; then
-        echo "no $extension files for production"
-        continue
-    fi
-
-    echo -n "copying $extension files from processing dir ($processing_dir/)" \
-    "to production dir ($production_dir/) ... "
-
-    rsync -a --include="*/" --include="*.$extension" --exclude="*" \
-    "$processing_dir/"* "$production_dir/" 2>"$tmp_err_log"
-
-    if [[ $? == 0 ]]; then
-        echo "done"
-    else
-        die "fail"
-    fi
-done
-
-# clean up the processing dir
-echo -n "deleting the processing dir ($processing_dir/) ... "
-rm -rf "$processing_dir" 2>"$tmp_err_log"
-if [[ $? == 0 ]]; then
-    echo "done"
-else
-    die "fail"
-fi
-
 # clean up the error log file if it exists ...
 if [[ -f "$tmp_err_log" ]]; then
     echo -n "deleting the the temporary error log file ($tmp_err_log) ... "
