@@ -124,7 +124,12 @@ fi
 
 # list and sort files using $process_file_extensions
 for extension in $process_file_extensions; do
-    files_with_extension="$(find "$production_dir" -type f -name "*.$extension")"
+    files_with_extension="$( \
+        find "$production_dir" \
+        -type f \
+        -name "*.$extension" \
+        -not -path "$source_dir/*" \
+    )"
     process_files="$process_files $files_with_extension"
 done
 # note: $process_files has a space at the start, but this is ignored by the
