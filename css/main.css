@@ -32,6 +32,12 @@ button:hover,
 button:focus {
     cursor: pointer;
 }
+select.invalid {
+    border: 1px solid red;
+}
+select option[disabled] {
+    display: none;
+}
 
 /* popup_modal ****************************************************************/
 
@@ -158,4 +164,24 @@ button:focus {
 }
 .edit-profile-pic-button-area {
     width: 100%;
+}
+
+/* profile_data ***************************************************************/
+
+.profile-data-area {
+    margin-top: 75px;
+    width: 100%;
+}
+.profile-data-area .row {
+    margin-bottom: 15px;
+}
+.profile-data-area label {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+.profile-data-birthday-error {
+    color: red;
+    clear: both;
+    display: block;
+    margin-top: 5px;
 }

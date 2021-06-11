@@ -2,10 +2,12 @@
 
 /* utils **********************************************************************/
 
+function trim(str) {
+    return str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+}
 NodeList.prototype.isNodeList = HTMLCollection.prototype.isNodeList = function () {
     return true;
 };
-
 function isNodeList(elements) {
     try {
         return (elements.isNodeList() === true);
@@ -49,6 +51,23 @@ function toLocalStorage(k,v) {
 }
 function fromLocalStorage(k) {
     return JSON.parse(localStorage.getItem(k));
+}
+function jsonCopyObject(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
+function addCSSClass(el, newClass) {
+    if (el == null) return;    var classList = el.className.split(/\s+/);
+    classList.push(newClass);
+    el.className = classList.join(' ');
+}
+function removeCSSClass(el, removeClass) {
+    if (el == null) return;    var classList = el.className.split(/\s+/);
+    var i = classList.indexOf(removeClass);
+    if (i == -1) return;    classList.splice(i, 1);    el.className = classList.join(' ');
+}
+function getMonthName(monthNumber) {
+    var date = new Date(2000, monthNumber, 1);
+    return date.toLocaleString('default', { month: 'long' });
 }
 
 /* popup_modal ****************************************************************/
@@ -205,4 +224,167 @@ function toggleEditMode(mode) {
             btnChange.style.display = 'none';
             break;
     }
+}
+
+/* profile_data ***************************************************************/
+
+addEvent(document, 'ready', function() {
+    var profileObj = fromLocalStorage('profile');
+    setProfileDataInGUI(profileObj);
+
+    addEvent(
+        document.getElementById('profileDataBirthYear'),
+        'change',
+        profileDataBirthdayChanged
+    );
+    addEvent(
+        document.getElementById('profileDataBirthMonth'),
+        'change',
+        profileDataBirthdayChanged
+    );
+    addEvent(
+        document.getElementById('profileDataBirthDay'),
+        'change',
+        profileDataBirthdayChanged
+    );
+    addEvent(
+        document.getElementById('profileDataClearAll'),
+        'click',
+        profileDataClearAll
+    );
+    addEvent(
+        document.getElementById('profileDataSave'),
+        'click',
+        profileDataSave
+    );
+    addEvent(
+        document.getElementById('profileDataCancel'),
+        'click',
+        profileDataCancel
+    );
+});
+
+var daysPerMonth = {
+    1: 31,    2: 28,    3: 31,    4: 30,    5: 31,    6: 30,    7: 31,    8: 31,    9: 30,    10: 31,    11: 30,    12: 31};
+daysPerMonthLeapYear = jsonCopyObject(daysPerMonth);
+daysPerMonthLeapYear[2] = 29;
+function profileDataBirthdayChanged() {
+// todo - hide invalid days when month selected (assume leap year unless year is selected)
+// todo - hide invalid days when year and month selected
+
+    var yearEl = document.getElementById('profileDataBirthYear');
+    var monthEl = document.getElementById('profileDataBirthMonth');
+    var dayEl = document.getElementById('profileDataBirthDay');
+
+    var daysInSelectedMonth = 31;    if (monthEl.value != '') {
+        daysInSelectedMonth = daysPerMonthLeapYear[monthEl.value];
+        if (yearEl.value != '' && !isLeapYear(yearEl.value)) {
+            daysInSelectedMonth = daysPerMonth[monthEl.value];
+        }
+    }
+    for (var day = 28; day <= 31; day++) {
+        dayEl.options[day].disabled = (day > daysInSelectedMonth);
+    }
+
+    var checkBirthDay = validDay(dayEl.value, monthEl.value, yearEl.value);
+    var errorEl = document.getElementById('profileDataBirthdayError');
+    if (checkBirthDay == true) {
+        removeCSSClass(dayEl, 'invalid');
+        errorEl.innerHTML = '';
+        errorEl.style.display = 'none';
+        return;
+    }
+
+    addCSSClass(dayEl, 'invalid');
+    errorEl.innerHTML = checkBirthDay;
+    errorEl.style.display = 'block';
+}
+
+function validDay(selectedDay, selectedMonth, selectedYear) {
+    if (selectedMonth == '') return true;
+    if (selectedDay == '') return true;
+    var daysInSelectedMonth = daysPerMonthLeapYear[selectedMonth];
+    if (selectedDay > daysInSelectedMonth) {
+        if (selectedMonth == 2) return getMonthName(selectedMonth - 1) +
+        ' has ' + daysInSelectedMonth + ' days at most';
+
+        return getMonthName(selectedMonth - 1) + ' only has ' +
+        daysInSelectedMonth + ' days';
+    }
+    if (selectedYear == '') return true;
+    if (isLeapYear(selectedYear)) return true;
+    daysInSelectedMonth = daysPerMonth[selectedMonth];
+    if (selectedDay > daysInSelectedMonth) {
+        return getMonthName(selectedMonth - 1) + ' only has ' +
+        daysInSelectedMonth + ' days in non-leap-years';
+    }
+
+    return true;
+}
+
+function isLeapYear(year) {
+    if ((year % 4) != 0) return false;
+    if ((year % 400) == 0) return true;
+    if ((year % 100) == 0) return false;
+    return true;
+}
+
+function profileDataClearAll() {
+    var profileObj = {};
+    setProfileDataInGUI(profileObj);
+}
+
+function profileDataSave() {
+    var profileObj = fromLocalStorage('profile');
+    var profileDataFromGUI = getProfileDataFromGUI();
+    for (var k in profileDataFromGUI) {
+        profileObj[k] = profileDataFromGUI[k];
+    }
+    toLocalStorage('profile', profileObj);
+}
+
+function profileDataCancel() {
+    var profileObj = fromLocalStorage('profile');
+    setProfileDataInGUI(profileObj);
+}
+
+function getProfileDataFromGUI() {
+    var profileObj = {};
+
+    var profileDataName = trim(document.getElementById('profileDataName').value);
+    if (profileDataName != '') profileObj.Name = profileDataName;
+
+    var profileDataBirthday =
+    document.getElementById('profileDataBirthYear').value + '-' +
+    document.getElementById('profileDataBirthMonth').value + '-' +
+    document.getElementById('profileDataBirthDay').value;
+    if (profileDataBirthday.length == 10) {
+        profileObj.Birthday = profileDataBirthday;
+    } else if (profileDataBirthday.length == 2) {
+        profileObj.Birthday = null;
+    }
+
+    var profileDataCity = trim(document.getElementById('profileDataCity').value);
+    if (profileDataCity != '') profileObj.City = profileDataCity;
+
+    var profileDataCountry = trim(document.getElementById('profileDataCountry').value);
+    if (profileDataCountry != '') profileObj.Country = profileDataCountry;
+
+    return profileObj;
+}
+
+function setProfileDataInGUI(profileObj) {
+    var name = '';    if (profileObj.Name != null) name = profileObj.Name;
+    document.getElementById('profileDataName').value = name;
+
+    var birthday = ['', '', ''];    if (profileObj.Birthday != null) birthday = profileObj.Birthday.split('-');
+    document.getElementById('profileDataBirthYear').value = birthday[0];
+    document.getElementById('profileDataBirthMonth').value = birthday[1];
+    document.getElementById('profileDataBirthDay').value = birthday[2];
+
+    var city = '';    if (profileObj.City != null) city = profileObj.City;
+    document.getElementById('profileDataCity').value = city;
+
+    var country = '';    if (profileObj.Country != null) country = profileObj.Country;
+    document.getElementById('profileDataCountry').value = country;
 }
