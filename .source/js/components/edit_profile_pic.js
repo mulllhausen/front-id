@@ -1,7 +1,7 @@
 <?php
 
-if (!defined("processing_dir")) define("processing_dir", $argv[1]);
-require_once(processing_dir."/config.php");
+if (!defined("production_dir")) define("production_dir", $argv[1]);
+require_once(production_dir."/config.php");
 
 // catch upload
 // convert to base64 blob

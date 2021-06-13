@@ -2,8 +2,8 @@
 
 // get all the variables out of config.sh and define() them in php
 
-if (!defined("processing_dir")) define("processing_dir", $argv[1]);
-$f = fopen(processing_dir."/config.sh", "r");
+if (!defined("production_dir")) define("production_dir", $argv[1]);
+$f = fopen(production_dir."/config.sh", "r");
 if (!$f) throw new Exception("unable to open config file");
 
 while (($line = fgets($f)) !== false)
@@ -22,7 +22,7 @@ while (($line = fgets($f)) !== false)
     // if its a string, then get rid of the quotes
     if ($value[0] == '"') $value = substr($value, 1);
     if ($value[-1] == '"') $value = substr($value, 0, -1);
-    define($key, $value);
+    if (!defined($key)) define($key, $value);
 }
 fclose($f);
 

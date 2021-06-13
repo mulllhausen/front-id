@@ -18,11 +18,9 @@ domain="frontid.null.place"
 #schema="file://"
 #domain="$production_dir"
 
-# the files that will be copied from source to processing - all files, by default
+# the files that will be copied from source to production - all files, by default
 explain_files_for_processing="all"
 files_for_processing="*"
-explain_mandatory_files_for_processing="php files and config.sh"
-mandatory_files_for_processing="*php config.sh"
 
 # files to proces with php. left first, right last
 process_file_extensions="svg css js html"

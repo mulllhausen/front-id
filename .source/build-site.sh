@@ -65,7 +65,7 @@ if [[ $php_err != "" ]]; then
     die "php is missing the following tags:$php_err\nturn $it_them on in $ini_file"
 fi
 
-# normalize some path variables (purely for pretty echos)
+# normalize some path variables (purely for pretty logging)
 # eg. turn this /home/me/blah/../blah/ into /home/me/blah/
 source_dir="$(unset CDPATH && cd "$source_dir" && pwd)"
 production_dir="$(unset CDPATH && cd "$production_dir" && pwd)"
@@ -80,31 +80,6 @@ if [[ $? == 0 ]]; then
     echo "done"
 else
     die "fail"
-fi
-
-# if we are processing all files then the mandatory files will already have been
-# copied from source to production. however if we are not processing all files
-# then we need to copy the mandatory files over
-if [[ "$explain_files_for_processing" != "all" ]]; then
-    # $mandatory_files_for_processing may contain *
-    # since we cannot quote it, we must disable globing then re-enable it later
-    set -f # disable globbing
-    for f in $mandatory_files_for_processing; do
-        echo -n "copying $f file(s) from the source dir ($source_dir/) to the" \
-        "production dir ($production_dir/) ... "
-
-        set +f # enable globbing
-        rsync -a --prune-empty-dirs --include="*/" --include="$f" \
-        --exclude="*" "$source_dir/"* "$production_dir/" 2>"$tmp_err_log"
-
-        if [[ $? == 0 ]]; then
-            echo "done"
-        else
-            die "fail"
-        fi
-        set -f # disable globbing
-    done
-    set +f # enable globbing
 fi
 
 echo -n "substituting variables in $production_dir/config.sh with their" \
@@ -128,6 +103,7 @@ for extension in $process_file_extensions; do
         find "$production_dir" \
         -type f \
         -name "*.$extension" \
+        -name "$files_for_processing" \
         -not -path "$source_dir/*" \
     )"
     process_files="$process_files $files_with_extension"
@@ -143,7 +119,15 @@ for f in $process_files; do
         mv "$f.tmp" "$f"
         echo "done"
     else
-        die "fail\nstopped processing files now"
+        just_one=""
+        if [[ "$explain_files_for_processing" != "all" ]]; then
+            # bash is so cumbersome! use an array to write a multiline string :P
+            just_one=(
+                "\ndon't forget to build all files first. then you can build"
+                "individual files"
+            )
+        fi
+        die "fail\nstopped processing files now${just_one[*]}"
     fi
 done
  

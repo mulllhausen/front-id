@@ -2,8 +2,8 @@
 
 // html for creating/showing/updating/deleting the profile picture
 
-if (!defined("processing_dir")) define("processing_dir", $argv[1]);
-require_once(processing_dir."/functions.php");
+if (!defined("production_dir")) define("production_dir", $argv[1]);
+require_once(production_dir."/functions.php");
 
 ?>
 <div id="editProfilePic" class="edit-profile-pic-popup-content-outer">

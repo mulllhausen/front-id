@@ -3,9 +3,9 @@
 // html to render the dashboard header consisting of random alphanumeric
 // characters with the site name centered on the 2nd row from the top
 
-if (!defined("processing_dir")) define("processing_dir", $argv[1]);
-require_once(processing_dir."/html/globals.php");
-require_once(processing_dir."/functions.php");
+if (!defined("production_dir")) define("production_dir", $argv[1]);
+require_once(production_dir."/html/globals.php");
+require_once(production_dir."/functions.php");
 
 ?>
 <div class="header">

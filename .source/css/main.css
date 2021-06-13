@@ -1,15 +1,15 @@
 <?php
 
-if (!defined("processing_dir")) define("processing_dir", $argv[1]);
-require_once(processing_dir."/css/globals.php");
-require_once(processing_dir."/functions.php");
+if (!defined("production_dir")) define("production_dir", $argv[1]);
+require_once(production_dir."/css/globals.php");
+require_once(production_dir."/functions.php");
 
-require_once_and_explain(processing_dir."/css/components/raw_elements.css");
-require_once_and_explain(processing_dir."/css/components/popup_modal.css");
-require_once_and_explain(processing_dir."/css/components/layout.css");
-require_once_and_explain(processing_dir."/css/components/header.css");
-require_once_and_explain(processing_dir."/css/components/hexagon_profile_pic.css");
-require_once_and_explain(processing_dir."/css/components/edit_profile_pic.css");
-require_once_and_explain(processing_dir."/css/components/profile_data.css");
+require_once_and_explain(production_dir."/css/components/raw_elements.css");
+require_once_and_explain(production_dir."/css/components/popup_modal.css");
+require_once_and_explain(production_dir."/css/components/layout.css");
+require_once_and_explain(production_dir."/css/components/header.css");
+require_once_and_explain(production_dir."/css/components/hexagon_profile_pic.css");
+require_once_and_explain(production_dir."/css/components/edit_profile_pic.css");
+require_once_and_explain(production_dir."/css/components/profile_data.css");
 
 ?>

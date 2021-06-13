@@ -1,7 +1,7 @@
 <?php
 
-if (!defined("processing_dir")) define("processing_dir", $argv[1]);
-require_once(processing_dir."/css/globals.php");
+if (!defined("production_dir")) define("production_dir", $argv[1]);
+require_once(production_dir."/css/globals.php");
 
 ?>
 <? echo "<?"; ?>xml version="1.0" encoding="UTF-8"<? echo "?>"; ?> 
