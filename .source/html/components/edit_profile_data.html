@@ -16,16 +16,20 @@ require_once(production_dir."/globals.php");
         <select id="profileDataBirthDay" class="profile-data-birth-day">
             <option value="" hidden>day</option>
 <? for ($day = 1; $day <= 31; $day++) { ?>
-            <option value="<? echo str_pad($day, 2, "0", STR_PAD_LEFT); ?>"><?
+            <option value="<? echo $day; ?>"><?
 echo $day;
             ?></option>
 <? } ?>
         </select>
         <select id="profileDataBirthMonth" class="profile-data-birth-month">
             <option value="" hidden>month</option>
-<? for ($month = 1; $month <= 12; $month++) { ?>
-            <option value="<? echo str_pad($month, 2, "0", STR_PAD_LEFT); ?>"><?
-echo date("F", mktime(0, 0, 0, $month, 1, 2000));
+<?
+$any_year = 2000;
+for ($month = 1; $month <= 12; $month++)
+{
+?>
+            <option value="<? echo $month; ?>"><?
+echo date("F", mktime(0, 0, 0, $month, 1, $any_year));
             ?></option>
 <? } ?>
         </select>

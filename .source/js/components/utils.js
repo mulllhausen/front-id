@@ -72,17 +72,17 @@ function jsonCopyObject(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
 function addCSSClass(el, newClass) {
-    if (el == null) return;<?/* there is no element to add a class to */?>
+    if (el == null) return;<?/* there is no element to add a class to */?> 
     var classList = el.className.split(/\s+/);
     classList.push(newClass);
     el.className = classList.join(' ');
 }
 function removeCSSClass(el, removeClass) {
-    if (el == null) return;<?/* there is no element to remove a class from */?>
+    if (el == null) return;<?/* there is no element to remove a class from */?> 
     var classList = el.className.split(/\s+/);
     var i = classList.indexOf(removeClass);
-    if (i == -1) return;<?/* not found */?>
-    classList.splice(i, 1);<?/* remove 1 list item */?>
+    if (i == -1) return;<?/* not found */?> 
+    classList.splice(i, 1);<?/* remove 1 list item */?> 
     el.className = classList.join(' ');
 }
 function getMonthName(monthNumber) {

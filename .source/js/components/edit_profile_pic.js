@@ -8,7 +8,7 @@ require_once(production_dir."/config.php");
 // set as <img> content
 // only save blob to localstorage if they click ok
 ?>
-var tmpUploadedImageBase64 = '';<?/* init */?>
+var tmpUploadedImageBase64 = '';<?/* init */?> 
 
 addEvent(document, 'ready', function () {
 <? if (build_for == "dev") { ?>
@@ -68,7 +68,7 @@ function popupEditProfilePic() {
 }
 
 function cancelPicHandler() {
-    tmpUploadedImageBase64 = '';<?/* reset global */?>
+    tmpUploadedImageBase64 = '';<?/* reset global */?> 
     hidePopup();
 }
 function changePicHandler() {
@@ -79,7 +79,7 @@ function donePicHandler() {
     if (tmpUploadedImageBase64 == '') return hidePopup();
 
     var profile = fromLocalStorage('profile');
-    if (profile == null) profile = {};<?/* init global */?>
+    if (profile == null) profile = {};<?/* init global */?> 
     profile.picB64 = tmpUploadedImageBase64;
     toLocalStorage('profile', profile);
     hidePopup();

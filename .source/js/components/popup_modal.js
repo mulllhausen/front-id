@@ -6,8 +6,7 @@ function showPopup(contentID) {
 ?>
     var contentEl = document.getElementById(contentID);
     var contentHTML = contentEl.outerHTML;
-    contentEl.parentNode.removeChild(contentEl);<?/* delete element */?>
-
+    contentEl.parentNode.removeChild(contentEl);<?/* delete element */?> 
     document.getElementById('popupModal').innerHTML = contentHTML;
     document.getElementById('popupModalBackground').style.display = 'inline-block';
 }

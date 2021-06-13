@@ -1,5 +1,5 @@
 
-/* raw_elements ***************************************************************/
+/* raw elements ***************************************************************/
 
 html, body {
     margin: 0;
@@ -39,7 +39,7 @@ select option[disabled] {
     display: none;
 }
 
-/* popup_modal ****************************************************************/
+/* popup modal ****************************************************************/
 
 .popup-modal-background {
     position: fixed;
@@ -58,7 +58,7 @@ select option[disabled] {
     padding: 20px;
     border-radius: 20px;
     opacity: 1; 
-    background-color: #ffffff 
+    background-color: #ffffff;
 }
 
 /* layout *********************************************************************/
@@ -96,7 +96,7 @@ select option[disabled] {
     color: white;
 }
 
-/* hexagon_profile_pic ********************************************************/
+/* hexagon profile pic ********************************************************/
 
 .hexagon-container {
     position: static;
@@ -110,7 +110,7 @@ select option[disabled] {
     margin-left: -75px;
 }
 
-/* edit_profile_pic ***********************************************************/
+/* edit profile pic ***********************************************************/
 
 .edit-profile-pic-popup-content-outer {
     width: 300px;
@@ -166,7 +166,7 @@ select option[disabled] {
     width: 100%;
 }
 
-/* profile_data ***************************************************************/
+/* edit profile data **********************************************************/
 
 .profile-data-area {
     margin-top: 75px;

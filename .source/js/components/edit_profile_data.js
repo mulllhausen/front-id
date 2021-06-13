@@ -44,22 +44,18 @@ addEvent(document, 'ready', function() {
     );
 });
 
-var daysPerMonth = {
-    1: 31,<?/* january - 31 days */?>
-    2: 28,<?/* february - 28 days */?>
-    3: 31,<?/* march - 31 days */?>
-    4: 30,<?/* april - 30 days */?>
-    5: 31,<?/* may - 31 days */?>
-    6: 30,<?/* june - 30 days */?>
-    7: 31,<?/* july - 31 days */?>
-    8: 31,<?/* august - 31 days */?>
-    9: 30,<?/* september - 30 days */?>
-    10: 31,<?/* october - 31 days */?>
-    11: 30,<?/* november - 30 days */?>
-    12: 31<?/* december - 31 days */?>
-};
+<?
+$days_per_month_dict = [];
+$non_leap_year = 2001;
+for ($month = 1; $month <= 12; $month++)
+{
+    $days_per_month_dict[$month] =
+    cal_days_in_month(CAL_GREGORIAN, $month, $non_leap_year);
+}
+?>
+var daysPerMonth = <? echo json_encode($days_per_month_dict); ?>;
 daysPerMonthLeapYear = jsonCopyObject(daysPerMonth);
-daysPerMonthLeapYear[2] = 29;<?/* february - 29 days */?>
+daysPerMonthLeapYear['2'] = 29;<?/* february - 29 days */?> 
 
 function profileDataBirthdayChanged() {
 // todo - hide invalid days when month selected (assume leap year unless year is selected)
@@ -69,7 +65,7 @@ function profileDataBirthdayChanged() {
     var monthEl = document.getElementById('profileDataBirthMonth');
     var dayEl = document.getElementById('profileDataBirthDay');
 
-    var daysInSelectedMonth = 31;<?/* start optimistic */?>
+    var daysInSelectedMonth = 31;<?/* start optimistic */?> 
     if (monthEl.value != '') {
         daysInSelectedMonth = daysPerMonthLeapYear[monthEl.value];
         if (yearEl.value != '' && !isLeapYear(yearEl.value)) {
@@ -77,10 +73,14 @@ function profileDataBirthdayChanged() {
         }
     }
     for (var day = 28; day <= 31; day++) {
-        dayEl.options[day].disabled = (day > daysInSelectedMonth);
+        dayEl.options[day.toString()].disabled = (day > daysInSelectedMonth);
     }
 
-    var checkBirthDay = validDay(dayEl.value, monthEl.value, yearEl.value);
+    var checkBirthDay = validDay(
+        (dayEl.value == '')   ? null : parseInt(dayEl.value),
+        (monthEl.value == '') ? null : parseInt(monthEl.value),
+        (yearEl.value == '')  ? null : parseInt(yearEl.value)
+    );
     var errorEl = document.getElementById('profileDataBirthdayError');
     if (checkBirthDay == true) {
         removeCSSClass(dayEl, 'invalid');
@@ -101,18 +101,18 @@ function validDay(selectedDay, selectedMonth, selectedYear) {
 <?
 // if no month is selected then any day is valid
 ?>
-    if (selectedMonth == '') return true;
+    if (selectedMonth == null) return true;
 <?
 // if no day is selected then the day cannot be invalid
 ?>
-    if (selectedDay == '') return true;
+    if (selectedDay == null) return true;
 <?
 // first check against the maximum number of days per month. this occurs in a
 // leap year
 ?>
-    var daysInSelectedMonth = daysPerMonthLeapYear[selectedMonth];
+    var daysInSelectedMonth = daysPerMonthLeapYear[selectedMonth.toString()];
     if (selectedDay > daysInSelectedMonth) {
-        if (selectedMonth == 2) return getMonthName(selectedMonth - 1) +
+        if (selectedMonth == '02') return getMonthName(selectedMonth - 1) +
         ' has ' + daysInSelectedMonth + ' days at most';
 
         return getMonthName(selectedMonth - 1) + ' only has ' +
@@ -123,7 +123,7 @@ function validDay(selectedDay, selectedMonth, selectedYear) {
 // since we validated for a leap-year, and for all we know this could be a leap-
 // year
 ?>
-    if (selectedYear == '') return true;
+    if (selectedYear == null) return true;
 <?
 // if a leap-year was selected then we have already finished all our validation
 ?>
@@ -132,7 +132,7 @@ function validDay(selectedDay, selectedMonth, selectedYear) {
 // validate for non-leap-years. only february could fail this test, since all
 // other months have the same number of days regardless of leap-year
 ?>
-    daysInSelectedMonth = daysPerMonth[selectedMonth];
+    daysInSelectedMonth = daysPerMonth[selectedMonth.toString()];
     if (selectedDay > daysInSelectedMonth) {
         return getMonthName(selectedMonth - 1) + ' only has ' +
         daysInSelectedMonth + ' days in non-leap-years';
@@ -182,9 +182,11 @@ function getProfileDataFromGUI() {
     var profileDataName = trim(document.getElementById('profileDataName').value);
     if (profileDataName != '') profileObj.Name = profileDataName;
 
+    var selectedMonth = document.getElementById('profileDataBirthMonth').value;
+    if (selectedMonth < 10) selectedMonth = '0' + selectedMonth;
     var profileDataBirthday =
     document.getElementById('profileDataBirthYear').value + '-' +
-    document.getElementById('profileDataBirthMonth').value + '-' +
+    selectedMonth + '-' +
     document.getElementById('profileDataBirthDay').value;
     if (profileDataBirthday.length == 10) {
         profileObj.Birthday = profileDataBirthday;
@@ -202,21 +204,22 @@ function getProfileDataFromGUI() {
 }
 
 function setProfileDataInGUI(profileObj) {
-    var name = '';<?/* init */?>
+    var name = '';<?/* init */?> 
+
     if (profileObj.Name != null) name = profileObj.Name;
     document.getElementById('profileDataName').value = name;
 
-    var birthday = ['', '', ''];<?/* init */?>
+    var birthday = ['', '', ''];<?/* init */?> 
     if (profileObj.Birthday != null) birthday = profileObj.Birthday.split('-');
     document.getElementById('profileDataBirthYear').value = birthday[0];
     document.getElementById('profileDataBirthMonth').value = birthday[1];
     document.getElementById('profileDataBirthDay').value = birthday[2];
 
-    var city = '';<?/* init */?>
+    var city = '';<?/* init */?> 
     if (profileObj.City != null) city = profileObj.City;
     document.getElementById('profileDataCity').value = city;
 
-    var country = '';<?/* init */?>
+    var country = '';<?/* init */?> 
     if (profileObj.Country != null) country = profileObj.Country;
     document.getElementById('profileDataCountry').value = country;
 }
