@@ -1,7 +1,7 @@
 <?php
 
 if (!defined("production_dir")) define("production_dir", $argv[1]);
-include_once(production_dir."/config.php");
+require_once(production_dir."/config.php");
 
 // querystring link - return the url of the file with a hash in the querystring
 function qs_link($file_with_path)

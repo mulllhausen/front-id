@@ -1,8 +1,8 @@
 <?php
 
 if (!defined("production_dir")) define("production_dir", $argv[1]);
-include_once(production_dir."/functions.php");
-include_once(production_dir."/css/globals.php");
+require_once(production_dir."/functions.php");
+require_once(production_dir."/css/globals.php");
 
 // todo:
 // - login (by loading encrypted private key and entering password)
@@ -49,7 +49,7 @@ var siteGlobals = {};
         <link rel="manifest" href="<? echo qs_link("/js/manifest.json"); ?>" />
     </head>
     <body>
-<? include(production_dir."/html/components/popup_modal.html"); ?>
+<? require(production_dir."/html/components/popup_modal.html"); ?>
         <script>
             if (window.hasOwnProperty == null) {
                 document.getElementById('fullpagePopupHeading').innerHTML = 'your browser is too old';
@@ -59,16 +59,16 @@ var siteGlobals = {};
             }
         </script>
         <div id="modalHoldings" class="content-for-modals" style="display:none;">
-<? include(production_dir."/html/components/edit_profile_pic.html"); ?>
+<? require(production_dir."/html/components/edit_profile_pic.html"); ?>
         </div>
 <?/*
     .page has all the content in it. on pc it is a vertical strip down the
     middle. on phone and tablet it is the full page width.
 */?>
         <div class="page">
-<? include(production_dir."/html/components/header.html"); ?>
-<? include(production_dir."/html/components/hexagon_profile_pic.html"); ?>
-<? include(production_dir."/html/components/profile_data.html"); ?>
+<? require(production_dir."/html/components/header.html"); ?>
+<? require(production_dir."/html/components/hexagon_profile_pic.html"); ?>
+<? require(production_dir."/html/components/edit_profile_data.html"); ?>
         </div>
         <script>triggerEvent(document, 'ready');</script>
     </body>
