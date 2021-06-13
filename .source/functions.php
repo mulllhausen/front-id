@@ -45,6 +45,8 @@ function random_b64($length, $centered_text = null)
 
 function ld_json($file, $name)
 {
+    // $file should be relative to the base directory
+    $file = str_replace(processing_dir."/", "", $file);
     $ld_json = array
     (
         "@context" => "http://schema.org",

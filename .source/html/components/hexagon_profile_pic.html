@@ -1,8 +1,16 @@
+<?php
+
+// html to render the hexagon frame with inner profile pic
+
+if (!defined("processing_dir")) define("processing_dir", $argv[1]);
+require_once(processing_dir."/functions.php");
+
+?>
 <div class="hexagon-container">
     <object
         type="image/svg+xml"
         id="hexagonProfilePic"
         class="hexagon-profile-pic"
-        data="https://frontid.null.place/images/hexagon.svg?hash=NzAwM2"
+        data="<? echo qs_link("/images/hexagon.svg"); ?>"
     ></object>
 </div>

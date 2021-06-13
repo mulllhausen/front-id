@@ -1,3 +1,11 @@
+<?php
+
+// html for creating/showing/updating/deleting the profile picture
+
+if (!defined("processing_dir")) define("processing_dir", $argv[1]);
+require_once(processing_dir."/functions.php");
+
+?>
 <div id="editProfilePic" class="edit-profile-pic-popup-content-outer">
     <p>edit profile picture</p>
     <div id="editProfilePicDropArea" class="edit-profile-pic-drop-area">
@@ -5,7 +13,7 @@
             id="editProfilePicDude"
             type="image/svg+xml"
             class="edit-profile-pic-dude"
-            data="https://frontid.null.place/images/dude.svg?hash=ZDVkND"
+            data="<? echo qs_link("/images/dude.svg"); ?>"
         ></object>
         <input
             type="file"
